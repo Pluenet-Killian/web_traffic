@@ -48,13 +48,13 @@ const POPULAR_SEARCHES = [
   { term: 'json to xml', href: 'json-to-xml' },
   { term: 'csv to xml', href: 'csv-to-xml' },
   { term: 'json to sql', href: 'json-to-sql' },
-  { term: 'csv to sql', href: 'csv-to-sql' },
-  { term: 'json to markdown', href: 'json-to-markdown' },
   { term: 'pdf dark mode', href: 'tools/pdf-dark-mode', hot: true },
   { term: 'pdf flatten', href: 'tools/pdf-flatten' },
   { term: 'image watermark', href: 'tools/image-watermark' },
-  { term: 'sql to csv', href: 'sql-to-csv' },
-  { term: 'xml to csv', href: 'xml-to-csv' },
+  { term: 'video to audio', href: 'tools/video-to-audio', hot: true },
+  { term: 'gif maker', href: 'tools/gif-maker' },
+  { term: 'video mute', href: 'tools/video-mute' },
+  { term: 'what is json', href: 'wiki/json' },
 ];
 
 export default async function Home({ params }: PageProps) {

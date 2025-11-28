@@ -70,7 +70,7 @@ export function getAllTools(): Tool[] {
   return Object.values(TOOLS);
 }
 
-export function getToolsByCategory(category: 'pdf' | 'image'): Tool[] {
+export function getToolsByCategory(category: 'pdf' | 'image' | 'video'): Tool[] {
   return getAllTools().filter((tool) => tool.category === category);
 }
 

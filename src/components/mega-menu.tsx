@@ -16,6 +16,10 @@ import {
   Shield,
   BookOpen,
   Sparkles,
+  Music,
+  VolumeX,
+  Image,
+  Braces,
 } from 'lucide-react';
 import type { Locale } from '@/config/i18n';
 
@@ -76,6 +80,39 @@ const TOOLS = [
     color: 'text-emerald-500',
     category: 'Image',
   },
+  {
+    id: 'video-to-audio',
+    label: 'Video to Audio',
+    description: 'Extract MP3 from video',
+    icon: Music,
+    color: 'text-pink-500',
+    category: 'Video',
+  },
+  {
+    id: 'video-mute',
+    label: 'Video Mute',
+    description: 'Remove audio from video',
+    icon: VolumeX,
+    color: 'text-orange-500',
+    category: 'Video',
+  },
+  {
+    id: 'gif-maker',
+    label: 'GIF Maker',
+    description: 'Create GIFs from video',
+    icon: Image,
+    color: 'text-indigo-500',
+    category: 'Video',
+  },
+];
+
+// Wiki formats
+const WIKI_FORMATS = [
+  { slug: 'json', label: 'What is JSON?', icon: Braces },
+  { slug: 'csv', label: 'What is CSV?', icon: FileSpreadsheet },
+  { slug: 'pdf', label: 'What is PDF?', icon: FileText },
+  { slug: 'mp4', label: 'What is MP4?', icon: FileCode },
+  { slug: 'xml', label: 'What is XML?', icon: FileCode },
 ];
 
 // Guides data
@@ -247,12 +284,12 @@ export default function MegaMenu({ lang, dict }: MegaMenuProps) {
               : 'opacity-0 invisible -translate-y-2'
           }`}
         >
-          <div className="w-[400px] bg-white rounded-2xl border border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-hidden">
+          <div className="w-[480px] bg-white rounded-2xl border border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-hidden">
             <div className="p-4">
               <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">
-                PDF & Image Tools
+                PDF, Image & Video Tools
               </div>
-              <div className="space-y-1">
+              <div className="grid grid-cols-2 gap-1">
                 {TOOLS.map((tool) => {
                   const Icon = tool.icon;
                   return (
@@ -261,19 +298,19 @@ export default function MegaMenu({ lang, dict }: MegaMenuProps) {
                       href={`/${lang}/tools/${tool.id}`}
                       className="flex items-start gap-3 p-3 rounded-xl hover:bg-zinc-50 transition-colors group"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-zinc-100 flex items-center justify-center flex-shrink-0 group-hover:bg-white transition-colors">
-                        <Icon className={`w-5 h-5 ${tool.color}`} />
+                      <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center flex-shrink-0 group-hover:bg-white transition-colors">
+                        <Icon className={`w-4 h-4 ${tool.color}`} />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-zinc-900">
+                          <span className="text-sm font-medium text-zinc-900 truncate">
                             {tool.label}
                           </span>
-                          <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider px-1.5 py-0.5 bg-zinc-100 rounded">
+                          <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider px-1.5 py-0.5 bg-zinc-100 rounded flex-shrink-0">
                             {tool.category}
                           </span>
                         </div>
-                        <p className="text-xs text-zinc-500 mt-0.5">
+                        <p className="text-xs text-zinc-500 mt-0.5 truncate">
                           {tool.description}
                         </p>
                       </div>
@@ -354,6 +391,73 @@ export default function MegaMenu({ lang, dict }: MegaMenuProps) {
                 className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
               >
                 View all guides
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Wiki Mega Menu */}
+      <div
+        className="relative"
+        onMouseEnter={() => handleMouseEnter('wiki')}
+        onMouseLeave={handleMouseLeave}
+      >
+        <button
+          className={`flex items-center gap-1 px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
+            activeMenu === 'wiki'
+              ? 'text-zinc-900 bg-zinc-100'
+              : 'text-zinc-500 hover:text-zinc-900'
+          }`}
+        >
+          Wiki
+          <ChevronDown
+            className={`w-3.5 h-3.5 transition-transform duration-200 ${
+              activeMenu === 'wiki' ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {/* Wiki Dropdown */}
+        <div
+          className={`absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50 transition-all duration-200 ${
+            activeMenu === 'wiki'
+              ? 'opacity-100 visible translate-y-0'
+              : 'opacity-0 invisible -translate-y-2'
+          }`}
+        >
+          <div className="w-[280px] bg-white rounded-2xl border border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-hidden">
+            <div className="p-4">
+              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">
+                File Format Glossary
+              </div>
+              <div className="space-y-1">
+                {WIKI_FORMATS.map((format) => {
+                  const Icon = format.icon;
+                  return (
+                    <Link
+                      key={format.slug}
+                      href={`/${lang}/wiki/${format.slug}`}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-zinc-50 transition-colors group"
+                    >
+                      <Icon className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600" />
+                      <span className="text-sm text-zinc-600 group-hover:text-zinc-900">
+                        {format.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-4 py-3 bg-zinc-50 border-t border-zinc-100">
+              <Link
+                href={`/${lang}/wiki`}
+                className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+              >
+                View all formats
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

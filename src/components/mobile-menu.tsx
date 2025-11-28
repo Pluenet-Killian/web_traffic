@@ -10,6 +10,7 @@ import {
   Wrench,
   BookOpen,
   Home,
+  Braces,
 } from 'lucide-react';
 import type { Locale } from '@/config/i18n';
 
@@ -109,6 +110,19 @@ export default function MobileMenu({ lang, dict }: MobileMenuProps) {
             <div className="flex items-center gap-3">
               <BookOpen className="w-5 h-5 text-emerald-500" />
               <span className="font-medium text-zinc-900">Guides</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-400" />
+          </Link>
+
+          {/* Wiki */}
+          <Link
+            href={`/${lang}/wiki`}
+            onClick={() => setIsOpen(false)}
+            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-zinc-50 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <Braces className="w-5 h-5 text-purple-500" />
+              <span className="font-medium text-zinc-900">Wiki</span>
             </div>
             <ChevronRight className="w-4 h-4 text-zinc-400" />
           </Link>

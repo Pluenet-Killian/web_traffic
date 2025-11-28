@@ -6,6 +6,9 @@ import {
   FileCheck,
   Shield,
   ArrowRight,
+  Music,
+  VolumeX,
+  Image,
 } from 'lucide-react';
 import { locales, localeHtmlLang, type Locale } from '@/config/i18n';
 import { getDictionary } from '@/dictionaries';
@@ -26,12 +29,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const dict = await getDictionary(lang);
 
   const title = lang === 'fr'
-    ? 'Outils PDF & Image Gratuits - Traitement 100% Client-Side'
-    : 'Free PDF & Image Tools - 100% Client-Side Processing';
+    ? 'Outils PDF, Image & Vidéo Gratuits - Traitement 100% Client-Side'
+    : 'Free PDF, Image & Video Tools - 100% Client-Side Processing';
 
   const description = lang === 'fr'
-    ? 'Outils gratuits pour manipuler vos PDFs et images. Mode sombre PDF, aplatissement de formulaires, filigranes. Tout se passe dans votre navigateur.'
-    : 'Free tools to manipulate your PDFs and images. PDF dark mode, form flattening, watermarks. Everything happens in your browser.';
+    ? 'Outils gratuits pour manipuler vos PDFs, images et vidéos. Mode sombre PDF, filigranes, extraction audio, création de GIF. Tout se passe dans votre navigateur.'
+    : 'Free tools to manipulate your PDFs, images and videos. PDF dark mode, watermarks, audio extraction, GIF maker. Everything happens in your browser.';
 
   const canonicalUrl = `${BASE_URL}/${lang}/tools`;
 
@@ -61,6 +64,9 @@ const iconMap = {
   Moon,
   FileCheck,
   Shield,
+  Music,
+  VolumeX,
+  Image,
 };
 
 export default async function ToolsPage({ params }: PageProps) {
@@ -69,8 +75,9 @@ export default async function ToolsPage({ params }: PageProps) {
 
   const pdfTools = getToolsByCategory('pdf');
   const imageTools = getToolsByCategory('image');
+  const videoTools = getToolsByCategory('video');
 
-  const title = lang === 'fr' ? 'Outils PDF & Image' : 'PDF & Image Tools';
+  const title = lang === 'fr' ? 'Outils PDF, Image & Vidéo' : 'PDF, Image & Video Tools';
   const subtitle = lang === 'fr'
     ? 'Outils gratuits et 100% client-side pour manipuler vos fichiers'
     : 'Free, 100% client-side tools to manipulate your files';
@@ -199,7 +206,7 @@ export default async function ToolsPage({ params }: PageProps) {
           </section>
 
           {/* Image Tools */}
-          <section>
+          <section className="mb-12">
             <div className="flex items-center gap-3 mb-6">
               <span className="px-3 py-1.5 text-sm font-bold text-white bg-emerald-500 rounded-lg">
                 IMAGE
@@ -213,6 +220,50 @@ export default async function ToolsPage({ params }: PageProps) {
               {imageTools.map((tool) => {
                 const content = getToolContent(tool.id, lang);
                 const IconComponent = iconMap[tool.icon as keyof typeof iconMap] || Shield;
+
+                return (
+                  <Link
+                    key={tool.id}
+                    href={`/${lang}/tools/${tool.slug}`}
+                    className="group p-6 bg-white rounded-xl border border-zinc-200 hover:border-zinc-300 hover:shadow-lg transition-all duration-200"
+                  >
+                    <div className={`w-12 h-12 ${tool.color} rounded-xl flex items-center justify-center mb-4`}>
+                      <IconComponent className="w-6 h-6 text-white" />
+                    </div>
+
+                    <h3 className="text-lg font-semibold text-zinc-900 mb-2 group-hover:text-zinc-700">
+                      {content?.title || tool.id}
+                    </h3>
+
+                    <p className="text-sm text-zinc-600 mb-4 line-clamp-2">
+                      {content?.description}
+                    </p>
+
+                    <div className="flex items-center gap-2 text-sm font-medium text-zinc-500 group-hover:text-zinc-900 transition-colors">
+                      <span>{lang === 'fr' ? 'Utiliser l\'outil' : 'Use tool'}</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Video Tools */}
+          <section className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="px-3 py-1.5 text-sm font-bold text-white bg-pink-500 rounded-lg">
+                VIDEO
+              </span>
+              <h2 className="text-xl font-semibold text-zinc-900">
+                {lang === 'fr' ? 'Outils Vidéo' : 'Video Tools'}
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {videoTools.map((tool) => {
+                const content = getToolContent(tool.id, lang);
+                const IconComponent = iconMap[tool.icon as keyof typeof iconMap] || Music;
 
                 return (
                   <Link
