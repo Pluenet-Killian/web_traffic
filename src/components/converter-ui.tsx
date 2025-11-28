@@ -12,19 +12,19 @@ import {
   FileText,
   Sparkles,
   Trash2,
-  ChevronRight,
-  Shield,
   X,
 } from 'lucide-react';
 import { convert } from '@/lib/converters';
 import { FORMATS } from '@/config/formats';
 import { SAMPLE_DATA } from '@/config/content-matrix';
+import ProcessingModal from './processing-modal';
 import type { Dictionary } from '@/dictionaries';
 
 interface ConverterUIProps {
   source: string;
   target: string;
   dict: Dictionary;
+  lang?: string;
 }
 
 type ToastType = 'success' | 'error' | 'info';
@@ -35,7 +35,7 @@ interface Toast {
   type: ToastType;
 }
 
-export default function ConverterUI({ source, target, dict }: ConverterUIProps) {
+export default function ConverterUI({ source, target, dict, lang = 'en' }: ConverterUIProps) {
   const sourceFormat = FORMATS[source];
   const targetFormat = FORMATS[target];
   const sourceLabel = dict.formats[source]?.label || sourceFormat.label;
@@ -49,9 +49,11 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
   const [isDragging, setIsDragging] = useState(false);
   const [rowCount, setRowCount] = useState<number | undefined>();
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalProgress, setModalProgress] = useState(0);
+  const [modalStatus, setModalStatus] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Toast management
   const showToast = useCallback((message: string, type: ToastType = 'info') => {
     const id = Math.random().toString(36).substring(7);
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -64,34 +66,52 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const handleConvert = useCallback(() => {
+  const handleConvert = useCallback(async () => {
     if (!input.trim()) return;
 
     setIsConverting(true);
+    setShowModal(true);
     setError('');
+    setModalProgress(0);
+    setModalStatus(lang === 'fr' ? 'Analyse des données...' : 'Analyzing data...');
 
-    setTimeout(() => {
-      const result = convert(source, target, input);
+    // Simulate progress for ad visibility
+    const progressSteps = [
+      { progress: 20, status: lang === 'fr' ? 'Parsing...' : 'Parsing...' },
+      { progress: 50, status: lang === 'fr' ? 'Conversion...' : 'Converting...' },
+      { progress: 80, status: lang === 'fr' ? 'Formatage...' : 'Formatting...' },
+      { progress: 100, status: lang === 'fr' ? 'Finalisation...' : 'Finalizing...' },
+    ];
 
-      if (result.success) {
-        setOutput(result.data);
-        setRowCount(result.rowCount);
-        setError('');
-        showToast(
-          result.rowCount
-            ? `${dict.converter.conversionSuccess || 'Conversion successful'} (${result.rowCount} ${dict.converter.rows || 'rows'})`
-            : dict.converter.conversionSuccess || 'Conversion successful',
-          'success'
-        );
-      } else {
-        setOutput('');
-        setRowCount(undefined);
-        setError(result.error + (result.details ? `\n${result.details}` : ''));
-      }
+    for (const step of progressSteps) {
+      await new Promise(resolve => setTimeout(resolve, 400));
+      setModalProgress(step.progress);
+      setModalStatus(step.status);
+    }
 
-      setIsConverting(false);
-    }, 100);
-  }, [source, target, input, showToast, dict]);
+    const result = convert(source, target, input);
+
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setShowModal(false);
+
+    if (result.success) {
+      setOutput(result.data);
+      setRowCount(result.rowCount);
+      setError('');
+      showToast(
+        result.rowCount
+          ? `${dict.converter.conversionSuccess || 'Conversion successful'} (${result.rowCount} ${dict.converter.rows || 'rows'})`
+          : dict.converter.conversionSuccess || 'Conversion successful',
+        'success'
+      );
+    } else {
+      setOutput('');
+      setRowCount(undefined);
+      setError(result.error + (result.details ? `\n${result.details}` : ''));
+    }
+
+    setIsConverting(false);
+  }, [source, target, input, showToast, dict, lang]);
 
   const handleCopy = useCallback(async () => {
     if (!output) return;
@@ -157,7 +177,6 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
     [handleFileUpload]
   );
 
-  // Drag & Drop handlers
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -207,27 +226,20 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
     }
   }, [source, showToast, dict]);
 
-  // Format badge colors with updated palette
-  const getFormatBadgeClasses = (format: string) => {
-    const colorMap: Record<string, string> = {
-      json: 'bg-amber-500 text-white',
-      csv: 'bg-emerald-500 text-white',
-      xml: 'bg-orange-500 text-white',
-      yaml: 'bg-rose-500 text-white',
-      sql: 'bg-blue-500 text-white',
-      markdown: 'bg-purple-500 text-white',
-      html: 'bg-cyan-500 text-white',
-    };
-    return colorMap[format] || 'bg-zinc-500 text-white';
-  };
-
   return (
     <div className="w-full space-y-6">
-      {/* Top Toolbar */}
+      {/* Processing Modal with Ad */}
+      <ProcessingModal
+        isOpen={showModal}
+        progress={modalProgress}
+        status={modalStatus}
+        lang={lang}
+      />
+
+      {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Import File */}
-          <label className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 rounded-xl cursor-pointer hover:bg-zinc-50 hover:border-zinc-300 transition-all duration-200 active:scale-[0.98]">
+          <label className="btn-secondary cursor-pointer">
             <Upload className="w-4 h-4" />
             <span>{dict.converter.importFile}</span>
             <input
@@ -239,103 +251,72 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
             />
           </label>
 
-          {/* Load Example */}
-          <button
-            onClick={loadExample}
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 hover:border-zinc-300 transition-all duration-200 active:scale-[0.98]"
-          >
-            <Sparkles className="w-4 h-4 text-amber-500" />
+          <button onClick={loadExample} className="btn-secondary">
+            <Sparkles className="w-4 h-4" />
             <span>{dict.converter.loadExample}</span>
           </button>
 
-          {/* Clear */}
-          <button
-            onClick={handleClear}
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 hover:border-zinc-300 transition-all duration-200 active:scale-[0.98]"
-          >
+          <button onClick={handleClear} className="btn-secondary">
             <Trash2 className="w-4 h-4" />
             <span className="hidden sm:inline">{dict.converter.clear}</span>
           </button>
         </div>
 
-        {/* Row count badge */}
         {rowCount !== undefined && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-zinc-100 rounded-full">
-            <FileText className="w-3.5 h-3.5" />
+          <span className="badge">
+            <FileText className="w-3 h-3 mr-1" />
             {rowCount} {dict.converter.rows || 'rows'}
-          </div>
+          </span>
         )}
       </div>
 
-      {/* IDE-Style Editor Layout */}
+      {/* Editor Grid */}
       <div className="grid lg:grid-cols-2 gap-4">
-        {/* Input Editor */}
+        {/* Input */}
         <div className="flex flex-col">
-          {/* Editor Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-zinc-800 rounded-t-xl border-b border-zinc-700">
-            <div className="flex items-center gap-3">
-              {/* Window Dots */}
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              </div>
-              {/* Format Badge */}
-              <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${getFormatBadgeClasses(source)}`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-zinc-100 border border-b-0 border-zinc-200 rounded-t-xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 text-xs font-bold text-zinc-700 bg-zinc-200 rounded">
                 {sourceLabel}
               </span>
               <span className="text-xs text-zinc-500">{dict.converter.input}</span>
             </div>
           </div>
 
-          {/* Editor Body */}
           <div
-            className={`relative flex-1 bg-zinc-900 rounded-b-xl overflow-hidden transition-all duration-200 ${
-              isDragging ? 'ring-2 ring-indigo-500 ring-offset-2 ring-offset-zinc-900' : ''
+            className={`relative flex-1 transition-all duration-200 ${
+              isDragging ? 'ring-2 ring-zinc-900 ring-offset-2' : ''
             }`}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           >
-            {/* Line Numbers Gutter */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-zinc-800/50 border-r border-zinc-700/50 pointer-events-none">
-              <div className="flex flex-col items-end pr-3 pt-4 text-xs text-zinc-600 font-mono leading-relaxed select-none">
-                {Array.from({ length: Math.max(input.split('\n').length, 15) }, (_, i) => (
-                  <span key={i + 1}>{i + 1}</span>
-                ))}
-              </div>
-            </div>
-
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={dict.converter.pasteHere.replace('{format}', sourceLabel)}
-              className="w-full min-h-[360px] h-full pl-14 pr-4 py-4 font-mono text-sm leading-relaxed bg-transparent text-zinc-100 placeholder-zinc-600 resize-none focus:outline-none"
+              className="w-full min-h-[320px] p-4 font-mono text-sm leading-relaxed bg-zinc-50 text-zinc-900 placeholder-zinc-400 border border-zinc-200 rounded-b-xl resize-none focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition-all"
               spellCheck={false}
             />
 
-            {/* Drag Overlay */}
             {isDragging && (
-              <div className="absolute inset-0 bg-indigo-500/10 backdrop-blur-sm flex items-center justify-center z-10">
+              <div className="absolute inset-0 bg-zinc-100 border-2 border-dashed border-zinc-400 rounded-b-xl flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-indigo-500/20 flex items-center justify-center">
-                    <FileText className="w-8 h-8 text-indigo-400" />
-                  </div>
-                  <p className="text-indigo-300 font-medium">
+                  <FileText className="w-10 h-10 mx-auto mb-2 text-zinc-500" />
+                  <p className="text-zinc-600 font-medium">
                     {dict.converter.dropFile || 'Drop your file here'}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Empty State */}
             {!input && !isDragging && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center opacity-50">
-                  <FileText className="w-12 h-12 mx-auto mb-3 text-zinc-600" />
+                <div className="text-center opacity-60">
+                  <FileText className="w-10 h-10 mx-auto mb-2 text-zinc-400" />
                   <p className="text-sm text-zinc-500">
-                    {dict.converter.dragDropHint || 'Drag & drop a file or paste your data'}
+                    {dict.converter.dragDropHint || 'Drag & drop or paste'}
                   </p>
                 </div>
               </div>
@@ -343,43 +324,28 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
           </div>
         </div>
 
-        {/* Output Editor */}
+        {/* Output */}
         <div className="flex flex-col">
-          {/* Editor Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-zinc-100 rounded-t-xl border border-b-0 border-zinc-200">
-            <div className="flex items-center gap-3">
-              {/* Window Dots */}
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-zinc-300" />
-                <div className="w-3 h-3 rounded-full bg-zinc-300" />
-                <div className="w-3 h-3 rounded-full bg-zinc-300" />
-              </div>
-              {/* Format Badge */}
-              <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${getFormatBadgeClasses(target)}`}>
+          <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border border-b-0 border-zinc-800 rounded-t-xl">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 text-xs font-bold text-white bg-zinc-700 rounded">
                 {targetLabel}
               </span>
-              <span className="text-xs text-zinc-500">{dict.converter.output}</span>
+              <span className="text-xs text-zinc-400">{dict.converter.output}</span>
             </div>
 
-            {/* Output Actions */}
             {output && (
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleCopy}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200 rounded-lg transition-all duration-200"
-                  title={dict.converter.copy}
+                  className="inline-flex items-center gap-1 px-2 py-1 text-xs text-zinc-400 hover:text-white transition-colors rounded"
                 >
-                  {copied ? (
-                    <Check className="w-3.5 h-3.5 text-green-600" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5" />
-                  )}
+                  {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copied ? dict.converter.copied : dict.converter.copy}</span>
                 </button>
                 <button
                   onClick={handleDownload}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200 rounded-lg transition-all duration-200"
-                  title={dict.converter.download}
+                  className="inline-flex items-center gap-1 px-2 py-1 text-xs text-zinc-400 hover:text-white transition-colors rounded"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>{dict.converter.download}</span>
@@ -388,30 +354,19 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
             )}
           </div>
 
-          {/* Editor Body */}
-          <div className="relative flex-1 bg-zinc-50 rounded-b-xl border border-t-0 border-zinc-200 overflow-hidden">
-            {/* Line Numbers Gutter */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 bg-zinc-100 border-r border-zinc-200 pointer-events-none">
-              <div className="flex flex-col items-end pr-3 pt-4 text-xs text-zinc-400 font-mono leading-relaxed select-none">
-                {Array.from({ length: Math.max(output.split('\n').length, 15) }, (_, i) => (
-                  <span key={i + 1}>{i + 1}</span>
-                ))}
-              </div>
-            </div>
-
+          <div className="relative flex-1">
             <textarea
               value={output}
               readOnly
               placeholder={dict.converter.resultHere.replace('{format}', targetLabel)}
-              className="w-full min-h-[360px] h-full pl-14 pr-4 py-4 font-mono text-sm leading-relaxed bg-transparent text-zinc-900 placeholder-zinc-400 resize-none focus:outline-none"
+              className="w-full min-h-[320px] p-4 font-mono text-sm leading-relaxed bg-zinc-950 text-zinc-100 placeholder-zinc-600 border border-zinc-800 rounded-b-xl resize-none focus:outline-none"
               spellCheck={false}
             />
 
-            {/* Empty State */}
             {!output && !error && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center opacity-50">
-                  <ChevronRight className="w-12 h-12 mx-auto mb-3 text-zinc-400" />
+                <div className="text-center opacity-60">
+                  <ArrowRight className="w-10 h-10 mx-auto mb-2 text-zinc-600" />
                   <p className="text-sm text-zinc-500">
                     {dict.converter.resultHere.replace('{format}', targetLabel)}
                   </p>
@@ -422,89 +377,67 @@ export default function ConverterUI({ source, target, dict }: ConverterUIProps) 
         </div>
       </div>
 
-      {/* Error Message */}
+      {/* Error */}
       {error && (
-        <div className="flex items-start gap-4 p-4 bg-red-50 border border-red-200 rounded-xl animate-fade-in">
-          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-            <AlertCircle className="w-5 h-5 text-red-600" />
-          </div>
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+          <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-red-900">{dict.converter.conversionError}</p>
-            <pre className="text-sm text-red-700 mt-1.5 whitespace-pre-wrap font-mono bg-red-100/50 p-3 rounded-lg overflow-x-auto">
-              {error}
-            </pre>
+            <p className="font-medium text-red-900">{dict.converter.conversionError}</p>
+            <pre className="text-sm text-red-700 mt-1 whitespace-pre-wrap font-mono">{error}</pre>
           </div>
         </div>
       )}
 
       {/* Convert Button */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-3">
         <button
           onClick={handleConvert}
           disabled={!input.trim() || isConverting}
-          className="group relative inline-flex items-center gap-3 px-10 py-4 text-lg font-bold text-white bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-2xl shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:from-indigo-500 hover:to-indigo-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none active:scale-[0.98] disabled:active:scale-100"
+          className="inline-flex items-center gap-3 px-8 py-4 text-base font-semibold text-white bg-zinc-900 rounded-xl hover:bg-zinc-800 transition-all duration-200 shadow-lg shadow-zinc-900/10 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] disabled:active:scale-100"
         >
           {isConverting ? (
             <>
-              <RotateCw className="w-6 h-6 animate-spin" />
+              <RotateCw className="w-5 h-5 animate-spin" />
               <span>{dict.converter.converting}</span>
             </>
           ) : (
             <>
               <span>{dict.converter.convert}</span>
-              <span className={`px-2 py-0.5 text-sm rounded ${getFormatBadgeClasses(source)}`}>
-                {sourceLabel}
-              </span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              <span className={`px-2 py-0.5 text-sm rounded ${getFormatBadgeClasses(target)}`}>
-                {targetLabel}
-              </span>
+              <span className="px-2 py-0.5 text-xs bg-zinc-700 rounded">{sourceLabel}</span>
+              <ArrowRight className="w-4 h-4" />
+              <span className="px-2 py-0.5 text-xs bg-zinc-700 rounded">{targetLabel}</span>
             </>
           )}
         </button>
 
-        {/* Security Notice */}
-        <div className="flex items-center gap-2 text-sm text-zinc-500">
-          <Shield className="w-4 h-4 text-green-500" />
-          <span>{dict.converter.securityNotice}</span>
-        </div>
+        <p className="text-sm text-zinc-500">
+          {dict.converter.securityNotice}
+        </p>
       </div>
 
-      {/* Toast Container */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm">
+      {/* Toasts */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm">
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg backdrop-blur-sm animate-slide-in-right ${
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg animate-slide-in-right ${
               toast.type === 'success'
-                ? 'bg-green-50/95 border-green-200 text-green-800'
+                ? 'bg-zinc-900 text-white'
                 : toast.type === 'error'
-                  ? 'bg-red-50/95 border-red-200 text-red-800'
-                  : 'bg-white/95 border-zinc-200 text-zinc-800'
+                  ? 'bg-red-600 text-white'
+                  : 'bg-zinc-900 text-white'
             }`}
             role="alert"
           >
-            {toast.type === 'success' && (
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                <Check className="w-4 h-4 text-green-600" />
-              </div>
-            )}
-            {toast.type === 'error' && (
-              <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
-                <AlertCircle className="w-4 h-4 text-red-600" />
-              </div>
-            )}
-            {toast.type === 'info' && (
-              <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
-                <FileText className="w-4 h-4 text-indigo-600" />
-              </div>
-            )}
+            {toast.type === 'success' && <Check className="w-4 h-4 text-green-400" />}
+            {toast.type === 'error' && <AlertCircle className="w-4 h-4" />}
+            {toast.type === 'info' && <FileText className="w-4 h-4 text-zinc-400" />}
             <p className="flex-1 text-sm font-medium">{toast.message}</p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="p-1 hover:bg-black/5 rounded-lg transition-colors"
+              className="p-1 hover:bg-white/10 rounded transition-colors"
             >
-              <X className="w-4 h-4 opacity-50" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         ))}

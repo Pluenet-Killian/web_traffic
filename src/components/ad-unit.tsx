@@ -1,5 +1,5 @@
 interface AdUnitProps {
-  position: 'header' | 'sidebar' | 'below-result' | 'inline';
+  position: 'header' | 'sidebar' | 'below-result' | 'inline' | 'modal';
   className?: string;
 }
 
@@ -8,6 +8,7 @@ const AD_SIZES: Record<AdUnitProps['position'], { width: string; height: string;
   sidebar: { width: 'w-full', height: 'h-[600px]', label: 'Skyscraper (300x600)' },
   'below-result': { width: 'w-full', height: 'h-32', label: 'Banner (728x90)' },
   inline: { width: 'w-full', height: 'h-20', label: 'Inline Ad (320x100)' },
+  modal: { width: 'w-[300px]', height: 'h-[250px]', label: 'Medium Rectangle (300x250)' },
 };
 
 export default function AdUnit({ position, className = '' }: AdUnitProps) {

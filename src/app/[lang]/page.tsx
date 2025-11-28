@@ -1,13 +1,61 @@
 import Link from 'next/link';
-import { ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import {
+  ArrowRight,
+  Search,
+  Shield,
+  Zap,
+  Lock,
+  Moon,
+  FileCheck,
+  Image as ImageIcon,
+  FileJson,
+  FileSpreadsheet,
+  FileCode,
+  FileType,
+  Database,
+  FileText,
+  Sparkles,
+  TrendingUp,
+} from 'lucide-react';
 import { FORMATS, FORMAT_IDS, getAllConversions, getConversionSlug, getFormatLabel } from '@/config/formats';
 import { type Locale } from '@/config/i18n';
 import { getDictionary } from '@/dictionaries';
 import AdUnit from '@/components/ad-unit';
+import AdNative from '@/components/ad-native';
 
 interface PageProps {
   params: Promise<{ lang: Locale }>;
 }
+
+// Format icons mapping
+const FORMAT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  json: FileJson,
+  csv: FileSpreadsheet,
+  xml: FileCode,
+  yaml: FileType,
+  sql: Database,
+  markdown: FileText,
+  html: FileCode,
+};
+
+// Popular searches for keyword cloud
+const POPULAR_SEARCHES = [
+  { term: 'json to csv', href: 'json-to-csv', hot: true },
+  { term: 'csv to json', href: 'csv-to-json', hot: true },
+  { term: 'xml to json', href: 'xml-to-json' },
+  { term: 'yaml to json', href: 'yaml-to-json' },
+  { term: 'json to yaml', href: 'json-to-yaml' },
+  { term: 'json to xml', href: 'json-to-xml' },
+  { term: 'csv to xml', href: 'csv-to-xml' },
+  { term: 'json to sql', href: 'json-to-sql' },
+  { term: 'csv to sql', href: 'csv-to-sql' },
+  { term: 'json to markdown', href: 'json-to-markdown' },
+  { term: 'pdf dark mode', href: 'tools/pdf-dark-mode', hot: true },
+  { term: 'pdf flatten', href: 'tools/pdf-flatten' },
+  { term: 'image watermark', href: 'tools/image-watermark' },
+  { term: 'sql to csv', href: 'sql-to-csv' },
+  { term: 'xml to csv', href: 'xml-to-csv' },
+];
 
 export default async function Home({ params }: PageProps) {
   const { lang } = await params;
@@ -20,77 +68,247 @@ export default async function Home({ params }: PageProps) {
   }, {} as Record<string, typeof conversions>);
 
   return (
-    <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
-        <div className="container mx-auto px-4 py-16 lg:py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              {dict.home.heroTitle}
-              <span className="block text-blue-200">{dict.home.heroSubtitle}</span>
+    <div className="min-h-screen">
+      {/* Hero Section - Clean with Search */}
+      <section className="relative overflow-hidden bg-white">
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 bg-grid-small opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-20 lg:pb-24">
+          <div className="max-w-3xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 text-sm font-medium text-zinc-700 bg-zinc-100 rounded-full">
+              <Sparkles className="w-4 h-4 text-yellow-500" />
+              42+ data conversions & tools
+            </div>
+
+            {/* Main Title */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 mb-6">
+              Convert data.
+              <br />
+              <span className="text-zinc-400">Instantly.</span>
             </h1>
-            <p className="text-xl lg:text-2xl text-blue-100 mb-8">
+
+            <p className="text-lg text-zinc-500 max-w-xl mx-auto mb-10">
               {dict.home.heroDescription}
             </p>
 
-            <div className="flex flex-wrap justify-center gap-8 mt-12">
-              <div className="flex items-center gap-3">
-                <Shield className="w-8 h-8 text-green-400" />
-                <div className="text-left">
-                  <div className="font-bold text-2xl">{conversions.length}</div>
-                  <div className="text-blue-200 text-sm">{dict.home.possibleConversions}</div>
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto mb-8">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Search conversions... (e.g., JSON to CSV)"
+                  className="w-full pl-12 pr-4 py-4 bg-white border border-zinc-200 rounded-2xl text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent shadow-sm transition-all"
+                />
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-sm text-zinc-400">Popular:</span>
+              <Link
+                href={`/${lang}/json-to-csv`}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors"
+              >
+                JSON to CSV
+              </Link>
+              <Link
+                href={`/${lang}/csv-to-json`}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-zinc-700 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors"
+              >
+                CSV to JSON
+              </Link>
+              <Link
+                href={`/${lang}/tools/pdf-dark-mode`}
+                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors"
+              >
+                <Moon className="w-3.5 h-3.5" />
+                PDF Dark Mode
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bento Grid - Main Tools */}
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+            {/* Large Card - JSON to CSV */}
+            <Link
+              href={`/${lang}/json-to-csv`}
+              className="lg:col-span-2 lg:row-span-2 relative group overflow-hidden rounded-3xl bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200/50 p-8 flex flex-col justify-between min-h-[280px] hover:shadow-lg hover:shadow-yellow-100 transition-all duration-300"
+            >
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 text-xs font-semibold text-yellow-700 bg-yellow-100 rounded-full">
+                  <TrendingUp className="w-3 h-3" />
+                  Most Popular
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-zinc-900 mb-2">
+                  JSON to CSV
+                </h3>
+                <p className="text-zinc-600">
+                  Convert JSON data to CSV format instantly. Perfect for spreadsheets and data analysis.
+                </p>
+              </div>
+              <div className="flex items-center justify-between mt-6">
+                <FileJson className="w-12 h-12 text-yellow-500/60" />
+                <div className="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <ArrowRight className="w-5 h-5 text-white" />
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Zap className="w-8 h-8 text-yellow-400" />
-                <div className="text-left">
-                  <div className="font-bold text-2xl">Instant</div>
-                  <div className="text-blue-200 text-sm">{dict.home.instantProcessing}</div>
+            </Link>
+
+            {/* Medium Card - PDF Dark Mode */}
+            <Link
+              href={`/${lang}/tools/pdf-dark-mode`}
+              className="relative group overflow-hidden rounded-3xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200/50 p-6 flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:shadow-violet-100 transition-all duration-300"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-xs font-semibold text-violet-600 uppercase tracking-wider">PDF Tool</span>
+                  <h3 className="text-lg font-bold text-zinc-900 mt-1">Dark Mode</h3>
                 </div>
+                <Moon className="w-8 h-8 text-violet-400" />
               </div>
-              <div className="flex items-center gap-3">
-                <Globe className="w-8 h-8 text-cyan-400" />
-                <div className="text-left">
-                  <div className="font-bold text-2xl">100%</div>
-                  <div className="text-blue-200 text-sm">{dict.home.privacyFirst}</div>
+              <p className="text-sm text-zinc-500 mt-2">Convert PDFs for comfortable night reading</p>
+            </Link>
+
+            {/* Medium Card - PDF Flatten */}
+            <Link
+              href={`/${lang}/tools/pdf-flatten`}
+              className="relative group overflow-hidden rounded-3xl bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200/50 p-6 flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:shadow-blue-100 transition-all duration-300"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">PDF Tool</span>
+                  <h3 className="text-lg font-bold text-zinc-900 mt-1">Flatten & Secure</h3>
                 </div>
+                <FileCheck className="w-8 h-8 text-blue-400" />
+              </div>
+              <p className="text-sm text-zinc-500 mt-2">Flatten forms & remove metadata</p>
+            </Link>
+
+            {/* Medium Card - Image Watermark */}
+            <Link
+              href={`/${lang}/tools/image-watermark`}
+              className="relative group overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200/50 p-6 flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:shadow-emerald-100 transition-all duration-300"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Image Tool</span>
+                  <h3 className="text-lg font-bold text-zinc-900 mt-1">Watermark</h3>
+                </div>
+                <ImageIcon className="w-8 h-8 text-emerald-400" />
+              </div>
+              <p className="text-sm text-zinc-500 mt-2">Protect your photos from theft</p>
+            </Link>
+
+            {/* Medium Card - CSV to JSON */}
+            <Link
+              href={`/${lang}/csv-to-json`}
+              className="relative group overflow-hidden rounded-3xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200/50 p-6 flex flex-col justify-between min-h-[140px] hover:shadow-lg hover:shadow-green-100 transition-all duration-300"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-xs font-semibold text-green-600 uppercase tracking-wider">Converter</span>
+                  <h3 className="text-lg font-bold text-zinc-900 mt-1">CSV to JSON</h3>
+                </div>
+                <FileSpreadsheet className="w-8 h-8 text-green-400" />
+              </div>
+              <p className="text-sm text-zinc-500 mt-2">Transform spreadsheet data to JSON</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Native Ad */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <AdNative title="Sponsored" />
+      </div>
+
+      {/* USP Section - Compact */}
+      <section className="py-12 bg-zinc-50 border-y border-zinc-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white border border-zinc-200 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-6 h-6 text-zinc-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-zinc-900">{dict.home.feature1Title}</h3>
+                <p className="text-sm text-zinc-500">{dict.home.feature1Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white border border-zinc-200 flex items-center justify-center flex-shrink-0">
+                <Zap className="w-6 h-6 text-zinc-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-zinc-900">{dict.home.feature2Title}</h3>
+                <p className="text-sm text-zinc-500">{dict.home.feature2Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-white border border-zinc-200 flex items-center justify-center flex-shrink-0">
+                <Lock className="w-6 h-6 text-zinc-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-zinc-900">{dict.home.feature3Title}</h3>
+                <p className="text-sm text-zinc-500">{dict.home.feature3Desc}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-4">
-        <AdUnit position="header" />
-      </div>
+      {/* All Converters Grid */}
+      <section id="conversions" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-zinc-900">
+                {dict.home.allConversions}
+              </h2>
+              <p className="text-zinc-500 mt-1">
+                {dict.home.chooseConversionDesc}
+              </p>
+            </div>
+            <span className="hidden sm:inline-flex items-center px-3 py-1.5 text-sm font-medium text-zinc-500 bg-zinc-100 rounded-full">
+              {conversions.length} conversions
+            </span>
+          </div>
 
-      {/* Conversion Matrix */}
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-center mb-4">{dict.home.chooseConversion}</h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          {dict.home.chooseConversionDesc}
-        </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {FORMAT_IDS.map((sourceId) => {
+              const sourceLabel = getFormatLabel(sourceId, dict);
+              const targetConversions = conversionsBySource[sourceId];
+              const Icon = FORMAT_ICONS[sourceId] || FileJson;
 
-        <div className="space-y-8">
-          {FORMAT_IDS.map((sourceId) => {
-            const sourceFormat = FORMATS[sourceId];
-            const sourceLabel = getFormatLabel(sourceId, dict);
-            const targetConversions = conversionsBySource[sourceId];
-
-            return (
-              <div key={sourceId} className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                <div className={`${sourceFormat.color} px-6 py-4`}>
-                  <div className="flex items-center gap-3">
-                    <span className="text-white font-bold text-xl">{sourceLabel}</span>
-                    <span className="text-white/80 text-sm">→</span>
+              return (
+                <div
+                  key={sourceId}
+                  className="bg-zinc-50 rounded-2xl p-5 hover:bg-zinc-100/80 transition-colors"
+                >
+                  {/* Format Header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-zinc-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-zinc-900">{sourceLabel}</h3>
+                      <p className="text-xs text-zinc-500">
+                        {dict.formats[sourceId]?.description}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-white/70 text-sm mt-1">{dict.formats[sourceId]?.description}</p>
-                </div>
 
-                <div className="p-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {/* Conversion Grid */}
+                  <div className="grid grid-cols-3 gap-2">
                     {targetConversions.map(({ target }) => {
-                      const targetFormat = FORMATS[target];
                       const targetLabel = getFormatLabel(target, dict);
                       const slug = getConversionSlug(sourceId, target);
 
@@ -98,81 +316,83 @@ export default async function Home({ params }: PageProps) {
                         <Link
                           key={slug}
                           href={`/${lang}/${slug}`}
-                          className="group flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all"
+                          className="flex items-center justify-between px-3 py-2 bg-white rounded-lg border border-zinc-200 hover:border-zinc-300 hover:shadow-sm transition-all group"
                         >
-                          <div className="flex items-center gap-3">
-                            <span className={`w-3 h-3 rounded-full ${targetFormat.color}`} />
-                            <span className="font-medium text-gray-800">{targetLabel}</span>
-                          </div>
-                          <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                          <span className="text-sm font-medium text-zinc-700 group-hover:text-zinc-900">
+                            {targetLabel}
+                          </span>
+                          <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-600 group-hover:translate-x-0.5 transition-all" />
                         </Link>
                       );
                     })}
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <div className="container mx-auto px-4 py-4">
-        <AdUnit position="inline" />
-      </div>
-
-      {/* Features Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">{dict.home.whyUseUs}</h2>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="bg-white p-8 rounded-2xl shadow-sm">
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
-                <Shield className="w-7 h-7 text-green-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">{dict.home.feature1Title}</h3>
-              <p className="text-gray-600">{dict.home.feature1Desc}</p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Zap className="w-7 h-7 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">{dict.home.feature2Title}</h3>
-              <p className="text-gray-600">{dict.home.feature2Desc}</p>
-            </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-sm">
-              <div className="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
-                <Globe className="w-7 h-7 text-purple-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-3">{dict.home.feature3Title}</h3>
-              <p className="text-gray-600">{dict.home.feature3Desc}</p>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* All Conversions List (SEO) */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold mb-8">{dict.home.allConversions}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          {conversions.map(({ source, target }) => {
-            const slug = getConversionSlug(source, target);
-            const sourceLabel = getFormatLabel(source, dict);
-            const targetLabel = getFormatLabel(target, dict);
-            return (
+      {/* Ad Unit */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <AdUnit position="inline" />
+      </div>
+
+      {/* Keyword Cloud Section (SEO) */}
+      <section className="py-16 bg-zinc-50 border-t border-zinc-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-xl font-bold text-zinc-900 mb-2">
+              Popular Searches
+            </h2>
+            <p className="text-zinc-500">
+              What people are converting right now
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto">
+            {POPULAR_SEARCHES.map((search) => (
               <Link
-                key={slug}
-                href={`/${lang}/${slug}`}
-                className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                key={search.href}
+                href={`/${lang}/${search.href}`}
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all hover:shadow-sm ${
+                  search.hot
+                    ? 'bg-zinc-900 text-white border-zinc-900 hover:bg-zinc-800'
+                    : 'bg-white text-zinc-700 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50'
+                }`}
               >
-                {sourceLabel} → {targetLabel}
+                {search.hot && <TrendingUp className="w-3.5 h-3.5" />}
+                <span className="text-sm font-medium">{search.term}</span>
               </Link>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </section>
-    </main>
+
+      {/* All Links Section (SEO) */}
+      <section className="py-16 bg-white border-t border-zinc-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-lg font-semibold text-zinc-900 mb-6">
+            All Converters A-Z
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-2">
+            {conversions.map(({ source, target }) => {
+              const slug = getConversionSlug(source, target);
+              const sourceLabel = getFormatLabel(source, dict);
+              const targetLabel = getFormatLabel(target, dict);
+              return (
+                <Link
+                  key={slug}
+                  href={`/${lang}/${slug}`}
+                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors py-1"
+                >
+                  {sourceLabel} to {targetLabel}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
