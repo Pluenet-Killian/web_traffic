@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Free online data format converter. Convert JSON, CSV, XML, YAML, SQL, Markdown and HTML instantly.",
+    "titleTemplate": "Convert {source} to {target} - Free & Secure Tool",
+    "descriptionTemplate": "Convert your {source} files to {target} instantly. 100% free tool, client-side processing, no data sent to server. Fast and secure."
+  },
+  "common": {
+    "home": "Home",
+    "allConverters": "All Converters",
+    "popularConversions": "Popular Conversions",
+    "relatedConversions": "Related Conversions",
+    "supportedFormats": "Supported Formats",
+    "learnMore": "Learn More",
+    "backToHome": "Back to Home",
+    "previousPage": "Previous Page",
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDesc": "Sorry, this conversion doesn't exist or the URL is incorrect."
+  },
+  "converter": {
+    "input": "Input",
+    "output": "Output",
+    "convert": "Convert",
+    "converting": "Converting...",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "clear": "Clear",
+    "loadExample": "Load Example",
+    "importFile": "Import File",
+    "pasteHere": "Paste your {format} here...",
+    "resultHere": "The {format} result will appear here...",
+    "conversionError": "Conversion Error",
+    "securityNotice": "100% local processing - Your data never leaves your browser",
+    "conversionSuccess": "Conversion successful",
+    "rows": "rows",
+    "copiedToClipboard": "Copied to clipboard",
+    "downloadStarted": "Download started",
+    "fileLoaded": "File loaded",
+    "fileReadError": "Error reading file",
+    "dropFile": "Drop your file here",
+    "dragDropHint": "Drag & drop a file or paste your data",
+    "exampleLoaded": "Example data loaded"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Free & Secure",
+    "heroDescription": "Transform your JSON, CSV, XML, YAML, SQL, Markdown and HTML files instantly. 100% client-side - Your data stays private.",
+    "possibleConversions": "Possible Conversions",
+    "instantProcessing": "Instant Processing",
+    "privacyFirst": "Privacy-first",
+    "chooseConversion": "Choose Your Conversion",
+    "chooseConversionDesc": "Click on a conversion to access the dedicated tool. All transformations are performed locally in your browser.",
+    "whyUseUs": "Why Use Our Converter?",
+    "feature1Title": "100% Secure",
+    "feature1Desc": "Your data never leaves your browser. No upload to our servers, entirely local processing.",
+    "feature2Title": "Ultra Fast",
+    "feature2Desc": "Instant conversion thanks to client-side processing. No waiting, no queue.",
+    "feature3Title": "Free & Unlimited",
+    "feature3Desc": "No file limits, no account required. Convert as much as you want, for free.",
+    "allConversions": "All Available Conversions"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Lightweight data interchange format"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Simple tabular format"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Structured markup format"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Human-readable configuration format"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - INSERT statements for databases"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Lightweight markup language for formatted text"
+    },
+    "html": {
+      "label": "HTML Table",
+      "description": "HTML table markup for web display"
+    }
+  },
+  "faq": {
+    "q1": "Why convert {source} to {target}?",
+    "a1": "Converting {source} to {target} is useful when you need to integrate data into a system that only accepts {target} format. {sourceDesc} can be transformed into {target} ({targetDesc}) for better compatibility.",
+    "q2": "Is my data secure during conversion?",
+    "a2": "Absolutely. Our converter works 100% client-side (in your browser). Your {source} data is never sent to an external server. Processing is instant and completely private.",
+    "q3": "What is the maximum {source} file size supported?",
+    "a3": "Since processing happens in your browser, the limit depends on available memory. Generally, files up to 10 MB are processed without issues. For larger files, we recommend splitting them.",
+    "q4": "How does {source} to {target} conversion work?",
+    "a4": "Our tool parses your {source} file, analyzes its data structure, then generates the equivalent in {target} format. Arrays, objects, and primitive values are intelligently mapped to {target} syntax.",
+    "q5": "Can I convert {target} to {source}?",
+    "a5": "Yes! We support bidirectional conversion. Use our {target} to {source} converter for the reverse operation."
+  },
+  "seo": {
+    "h1Template": "{source} to {target} Converter",
+    "introTemplate": "Easily transform your {source} data ({sourceDesc}) into {target} format ({targetDesc}). Our tool works entirely in your browser to guarantee your data privacy.",
+    "reverseConversion": "Need the reverse conversion?",
+    "convertReverse": "Convert {target} → {source}",
+    "useCasesTitle": "Common Use Cases",
+    "benefitsTitle": "Benefits",
+    "technicalNoteTitle": "Technical Details"
+  },
+  "footer": {
+    "aboutText": "Convert your data between JSON, CSV, XML, YAML, SQL, Markdown and HTML for free. Our tool works entirely in your browser to guarantee your data privacy.",
+    "info": "Information",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact",
+    "copyright": "All rights reserved.",
+    "securityNote": "100% client-side processing - Your data never leaves your browser."
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Kostenloser Online-Datenformat-Konverter. Konvertieren Sie JSON, CSV, XML, YAML, SQL, Markdown und HTML sofort.",
+    "titleTemplate": "{source} in {target} konvertieren - Kostenloses & Sicheres Tool",
+    "descriptionTemplate": "Konvertieren Sie Ihre {source}-Dateien sofort in {target}. 100% kostenloses Tool, clientseitige Verarbeitung, keine Daten an Server gesendet. Schnell und sicher."
+  },
+  "common": {
+    "home": "Startseite",
+    "allConverters": "Alle Konverter",
+    "popularConversions": "Beliebte Konvertierungen",
+    "relatedConversions": "Ähnliche Konvertierungen",
+    "supportedFormats": "Unterstützte Formate",
+    "learnMore": "Mehr erfahren",
+    "backToHome": "Zurück zur Startseite",
+    "previousPage": "Vorherige Seite",
+    "pageNotFound": "Seite nicht gefunden",
+    "pageNotFoundDesc": "Entschuldigung, diese Konvertierung existiert nicht oder die URL ist falsch."
+  },
+  "converter": {
+    "input": "Eingabe",
+    "output": "Ausgabe",
+    "convert": "Konvertieren",
+    "converting": "Konvertierung...",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "download": "Herunterladen",
+    "clear": "Löschen",
+    "loadExample": "Beispiel laden",
+    "importFile": "Datei importieren",
+    "pasteHere": "Fügen Sie Ihr {format} hier ein...",
+    "resultHere": "Das {format}-Ergebnis erscheint hier...",
+    "conversionError": "Konvertierungsfehler",
+    "securityNotice": "100% lokale Verarbeitung - Ihre Daten verlassen niemals Ihren Browser",
+    "conversionSuccess": "Konvertierung erfolgreich",
+    "rows": "Zeilen",
+    "copiedToClipboard": "In die Zwischenablage kopiert",
+    "downloadStarted": "Download gestartet",
+    "fileLoaded": "Datei geladen",
+    "fileReadError": "Fehler beim Lesen der Datei",
+    "dropFile": "Datei hier ablegen",
+    "dragDropHint": "Datei ziehen und ablegen oder Daten einfügen",
+    "exampleLoaded": "Beispiel geladen"
+  },
+  "home": {
+    "heroTitle": "Daten-Konverter",
+    "heroSubtitle": "Kostenlos & Sicher",
+    "heroDescription": "Transformieren Sie Ihre JSON, CSV, XML, YAML, SQL, Markdown und HTML Dateien sofort. 100% clientseitig - Ihre Daten bleiben privat.",
+    "possibleConversions": "Mögliche Konvertierungen",
+    "instantProcessing": "Sofortige Verarbeitung",
+    "privacyFirst": "Datenschutz zuerst",
+    "chooseConversion": "Wählen Sie Ihre Konvertierung",
+    "chooseConversionDesc": "Klicken Sie auf eine Konvertierung, um das entsprechende Tool zu öffnen. Alle Transformationen werden lokal in Ihrem Browser durchgeführt.",
+    "whyUseUs": "Warum unseren Konverter verwenden?",
+    "feature1Title": "100% Sicher",
+    "feature1Desc": "Ihre Daten verlassen niemals Ihren Browser. Kein Upload auf unsere Server, vollständig lokale Verarbeitung.",
+    "feature2Title": "Ultraschnell",
+    "feature2Desc": "Sofortige Konvertierung dank clientseitiger Verarbeitung. Kein Warten, keine Warteschlange.",
+    "feature3Title": "Kostenlos & Unbegrenzt",
+    "feature3Desc": "Keine Dateilimits, kein Konto erforderlich. Konvertieren Sie so viel Sie wollen, kostenlos.",
+    "allConversions": "Alle verfügbaren Konvertierungen"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Leichtgewichtiges Datenaustauschformat"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Einfaches Tabellenformat"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Strukturiertes Auszeichnungsformat"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Menschenlesbares Konfigurationsformat"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - INSERT-Anweisungen für Datenbanken"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Leichtgewichtige Auszeichnungssprache für formatierten Text"
+    },
+    "html": {
+      "label": "HTML-Tabelle",
+      "description": "HTML-Tabellenmarkup für Web-Anzeige"
+    }
+  },
+  "faq": {
+    "q1": "Warum {source} in {target} konvertieren?",
+    "a1": "Die Konvertierung von {source} zu {target} ist nützlich, wenn Sie Daten in ein System integrieren müssen, das nur das {target}-Format akzeptiert. {sourceDesc} kann in {target} ({targetDesc}) für bessere Kompatibilität transformiert werden.",
+    "q2": "Sind meine Daten während der Konvertierung sicher?",
+    "a2": "Absolut. Unser Konverter arbeitet 100% clientseitig (in Ihrem Browser). Ihre {source}-Daten werden niemals an einen externen Server gesendet. Die Verarbeitung ist sofort und vollständig privat.",
+    "q3": "Was ist die maximale unterstützte {source}-Dateigröße?",
+    "a3": "Da die Verarbeitung in Ihrem Browser stattfindet, hängt das Limit vom verfügbaren Speicher ab. Generell werden Dateien bis 10 MB problemlos verarbeitet. Für größere Dateien empfehlen wir, sie aufzuteilen.",
+    "q4": "Wie funktioniert die Konvertierung von {source} zu {target}?",
+    "a4": "Unser Tool analysiert Ihre {source}-Datei, untersucht ihre Datenstruktur und generiert dann das Äquivalent im {target}-Format. Arrays, Objekte und primitive Werte werden intelligent auf die {target}-Syntax abgebildet.",
+    "q5": "Kann ich {target} in {source} konvertieren?",
+    "a5": "Ja! Wir unterstützen bidirektionale Konvertierung. Verwenden Sie unseren {target} zu {source} Konverter für die umgekehrte Operation."
+  },
+  "seo": {
+    "h1Template": "{source} zu {target} Konverter",
+    "introTemplate": "Transformieren Sie einfach Ihre {source}-Daten ({sourceDesc}) in das {target}-Format ({targetDesc}). Unser Tool arbeitet vollständig in Ihrem Browser, um den Datenschutz Ihrer Daten zu garantieren.",
+    "reverseConversion": "Benötigen Sie die umgekehrte Konvertierung?",
+    "convertReverse": "{target} → {source} konvertieren",
+    "useCasesTitle": "Häufige Anwendungsfälle",
+    "benefitsTitle": "Vorteile",
+    "technicalNoteTitle": "Technische Details"
+  },
+  "footer": {
+    "aboutText": "Konvertieren Sie Ihre Daten kostenlos zwischen JSON, CSV, XML, YAML, SQL, Markdown und HTML. Unser Tool arbeitet vollständig in Ihrem Browser, um den Datenschutz Ihrer Daten zu garantieren.",
+    "info": "Informationen",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "termsOfService": "Nutzungsbedingungen",
+    "contact": "Kontakt",
+    "copyright": "Alle Rechte vorbehalten.",
+    "securityNote": "100% clientseitige Verarbeitung - Ihre Daten verlassen niemals Ihren Browser."
+  }
+}

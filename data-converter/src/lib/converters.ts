@@ -1,126 +1,242 @@
-// Fonctions de conversion pures - Aucune dépendance externe
-// Toutes les transformations sont effectuées côté client
+/**
+ * Data Conversion Engine
+ * Professional-grade converters using industry-standard libraries
+ *
+ * Supported formats: JSON, CSV, XML, YAML, SQL, Markdown, HTML
+ */
 
-export type ConversionResult = {
-  success: true;
-  data: string;
-} | {
-  success: false;
-  error: string;
-};
+import Papa from 'papaparse';
+import yaml from 'js-yaml';
 
 // ============================================
-// PARSERS - Convertissent string -> objet JS
+// TYPES
 // ============================================
 
-function parseJson(input: string): unknown {
-  return JSON.parse(input.trim());
+export type ConversionResult =
+  | { success: true; data: string; rowCount?: number }
+  | { success: false; error: string; details?: string };
+
+type DataRow = Record<string, unknown>;
+type DataArray = DataRow[];
+
+// ============================================
+// VALIDATION & UTILITIES
+// ============================================
+
+function validateInput(input: string, format: string): void {
+  if (!input || !input.trim()) {
+    throw new ConversionError(`Empty input. Please provide valid ${format.toUpperCase()} data.`);
+  }
 }
 
-function parseCsv(input: string): Array<Record<string, string>> {
-  const lines = input.trim().split('\n');
-  if (lines.length < 2) {
-    throw new Error('Le CSV doit contenir au moins un en-tête et une ligne de données');
-  }
-
-  const headers = parseCsvLine(lines[0]);
-  const result: Array<Record<string, string>> = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCsvLine(lines[i]);
-    const row: Record<string, string> = {};
-
-    headers.forEach((header, index) => {
-      row[header] = values[index] || '';
-    });
-
-    result.push(row);
-  }
-
-  return result;
+function sanitizeString(str: unknown): string {
+  if (str === null || str === undefined) return '';
+  if (typeof str === 'object') return JSON.stringify(str);
+  return String(str);
 }
 
-function parseCsvLine(line: string): string[] {
-  const result: string[] = [];
-  let current = '';
-  let inQuotes = false;
+function flattenObject(obj: Record<string, unknown>, prefix = ''): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
+  for (const [key, value] of Object.entries(obj)) {
+    const newKey = prefix ? `${prefix}.${key}` : key;
 
-    if (char === '"') {
-      if (inQuotes && line[i + 1] === '"') {
-        current += '"';
-        i++;
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      Object.assign(result, flattenObject(value as Record<string, unknown>, newKey));
+    } else if (Array.isArray(value)) {
+      // For arrays of primitives, join them; for objects, stringify
+      if (value.every(v => typeof v !== 'object' || v === null)) {
+        result[newKey] = value.join(', ');
       } else {
-        inQuotes = !inQuotes;
+        result[newKey] = JSON.stringify(value);
       }
-    } else if (char === ',' && !inQuotes) {
-      result.push(current.trim());
-      current = '';
     } else {
-      current += char;
+      result[newKey] = value;
     }
   }
 
-  result.push(current.trim());
   return result;
 }
 
-function parseXml(input: string): unknown {
+function normalizeToArray(data: unknown): DataArray {
+  if (Array.isArray(data)) {
+    return data.map(item => {
+      if (typeof item === 'object' && item !== null) {
+        return flattenObject(item as Record<string, unknown>);
+      }
+      return { value: item };
+    });
+  }
+
+  if (typeof data === 'object' && data !== null) {
+    // Check if it's an object with array values
+    const values = Object.values(data);
+    for (const value of values) {
+      if (Array.isArray(value)) {
+        return normalizeToArray(value);
+      }
+    }
+    // Single object
+    return [flattenObject(data as Record<string, unknown>)];
+  }
+
+  return [{ value: data }];
+}
+
+function collectAllKeys(data: DataArray): string[] {
+  const keysSet = new Set<string>();
+  data.forEach(row => {
+    if (typeof row === 'object' && row !== null) {
+      Object.keys(row).forEach(key => keysSet.add(key));
+    }
+  });
+  return Array.from(keysSet);
+}
+
+function inferSqlType(value: unknown): string {
+  if (value === null || value === undefined) return 'TEXT';
+  if (typeof value === 'number') {
+    return Number.isInteger(value) ? 'INTEGER' : 'DECIMAL(10,2)';
+  }
+  if (typeof value === 'boolean') return 'BOOLEAN';
+  if (typeof value === 'string') {
+    if (value.length > 255) return 'TEXT';
+    // Check for date patterns
+    if (/^\d{4}-\d{2}-\d{2}/.test(value)) return 'DATE';
+    return 'VARCHAR(255)';
+  }
+  return 'TEXT';
+}
+
+// ============================================
+// CUSTOM ERROR
+// ============================================
+
+class ConversionError extends Error {
+  constructor(message: string, public details?: string) {
+    super(message);
+    this.name = 'ConversionError';
+  }
+}
+
+// ============================================
+// PARSERS
+// ============================================
+
+function parseJSON(input: string): unknown {
+  validateInput(input, 'JSON');
+  try {
+    return JSON.parse(input.trim());
+  } catch (e) {
+    const error = e as Error;
+    // Try to provide helpful error message
+    const match = error.message.match(/position (\d+)/);
+    if (match) {
+      const pos = parseInt(match[1]);
+      const context = input.slice(Math.max(0, pos - 20), pos + 20);
+      throw new ConversionError(
+        'Invalid JSON syntax',
+        `Error near: "...${context}..."`
+      );
+    }
+    throw new ConversionError('Invalid JSON format', error.message);
+  }
+}
+
+function parseCSV(input: string): DataArray {
+  validateInput(input, 'CSV');
+
+  const result = Papa.parse<DataRow>(input.trim(), {
+    header: true,
+    skipEmptyLines: true,
+    transformHeader: (header) => header.trim(),
+    transform: (value) => value.trim(),
+  });
+
+  if (result.errors.length > 0) {
+    const firstError = result.errors[0];
+    throw new ConversionError(
+      `CSV parsing error at row ${firstError.row || 'unknown'}`,
+      firstError.message
+    );
+  }
+
+  if (result.data.length === 0) {
+    throw new ConversionError('CSV file is empty or contains only headers');
+  }
+
+  return result.data;
+}
+
+function parseXML(input: string): unknown {
+  validateInput(input, 'XML');
+
+  if (typeof DOMParser === 'undefined') {
+    throw new ConversionError('XML parsing not available in this environment');
+  }
+
   const parser = new DOMParser();
   const doc = parser.parseFromString(input.trim(), 'application/xml');
 
   const errorNode = doc.querySelector('parsererror');
   if (errorNode) {
-    throw new Error('XML invalide: ' + errorNode.textContent);
+    const errorText = errorNode.textContent || 'Unknown XML error';
+    throw new ConversionError('Invalid XML syntax', errorText.slice(0, 200));
   }
 
-  return xmlToObject(doc.documentElement);
+  return xmlNodeToObject(doc.documentElement);
 }
 
-function xmlToObject(node: Element): unknown {
+function xmlNodeToObject(node: Element): unknown {
   const result: Record<string, unknown> = {};
 
-  // Attributs
+  // Handle attributes
   if (node.attributes.length > 0) {
-    result['@attributes'] = {};
+    const attrs: Record<string, string> = {};
     for (let i = 0; i < node.attributes.length; i++) {
       const attr = node.attributes[i];
-      (result['@attributes'] as Record<string, string>)[attr.name] = attr.value;
+      attrs[`@${attr.name}`] = attr.value;
     }
+    Object.assign(result, attrs);
   }
 
-  // Enfants
+  // Get child elements
   const children = Array.from(node.childNodes);
+  const elementChildren = children.filter(c => c.nodeType === Node.ELEMENT_NODE) as Element[];
   const textContent = children
-    .filter((child) => child.nodeType === Node.TEXT_NODE)
-    .map((child) => child.textContent?.trim())
+    .filter(c => c.nodeType === Node.TEXT_NODE)
+    .map(c => c.textContent?.trim())
     .filter(Boolean)
     .join('');
 
-  if (textContent && children.filter((c) => c.nodeType === Node.ELEMENT_NODE).length === 0) {
-    // Noeud texte uniquement
+  // If only text content
+  if (elementChildren.length === 0 && textContent) {
     if (Object.keys(result).length === 0) {
+      // Try to parse as number or boolean
+      if (/^-?\d+(\.\d+)?$/.test(textContent)) {
+        return parseFloat(textContent);
+      }
+      if (textContent === 'true') return true;
+      if (textContent === 'false') return false;
       return textContent;
     }
     result['#text'] = textContent;
     return result;
   }
 
-  // Noeuds enfants
-  const elementChildren = children.filter((child) => child.nodeType === Node.ELEMENT_NODE) as Element[];
-
+  // Process child elements
   for (const child of elementChildren) {
     const childName = child.nodeName;
-    const childValue = xmlToObject(child);
+    const childValue = xmlNodeToObject(child);
 
     if (childName in result) {
-      // Convertir en tableau si plusieurs éléments du même nom
-      if (!Array.isArray(result[childName])) {
-        result[childName] = [result[childName]];
+      // Convert to array if multiple same-named children
+      const existing = result[childName];
+      if (Array.isArray(existing)) {
+        existing.push(childValue);
+      } else {
+        result[childName] = [existing, childValue];
       }
-      (result[childName] as unknown[]).push(childValue);
     } else {
       result[childName] = childValue;
     }
@@ -129,189 +245,278 @@ function xmlToObject(node: Element): unknown {
   return Object.keys(result).length === 0 ? '' : result;
 }
 
-function parseYaml(input: string): unknown {
-  // Parser YAML simplifié (supporte les structures basiques)
-  const lines = input.trim().split('\n');
-  return parseYamlLines(lines, 0).value;
+function parseYAML(input: string): unknown {
+  validateInput(input, 'YAML');
+  try {
+    const result = yaml.load(input.trim());
+    if (result === undefined || result === null) {
+      throw new ConversionError('YAML file is empty or invalid');
+    }
+    return result;
+  } catch (e) {
+    const error = e as Error;
+    if (error.name === 'YAMLException') {
+      throw new ConversionError('Invalid YAML syntax', error.message);
+    }
+    throw new ConversionError('Failed to parse YAML', error.message);
+  }
 }
 
-function parseYamlLines(lines: string[], startIndent: number): { value: unknown; endIndex: number } {
-  const result: Record<string, unknown> = {};
-  let currentArray: unknown[] | null = null;
-  let currentKey = '';
-  let i = 0;
+function parseSQL(input: string): DataArray {
+  validateInput(input, 'SQL');
 
-  while (i < lines.length) {
-    const line = lines[i];
-    const trimmed = line.trim();
-
-    // Ligne vide ou commentaire
-    if (!trimmed || trimmed.startsWith('#')) {
-      i++;
-      continue;
-    }
-
-    const indent = line.search(/\S/);
-
-    // Fin du bloc courant
-    if (indent < startIndent && startIndent > 0) {
-      break;
-    }
-
-    // Élément de liste
-    if (trimmed.startsWith('- ')) {
-      if (!currentArray) {
-        currentArray = [];
-      }
-      const value = trimmed.substring(2).trim();
-
-      if (value.includes(':')) {
-        // Objet inline dans la liste
-        const obj: Record<string, unknown> = {};
-        const pairs = value.split(',').map((p) => p.trim());
-        for (const pair of pairs) {
-          const [k, v] = pair.split(':').map((s) => s.trim());
-          obj[k] = parseYamlValue(v);
-        }
-        currentArray.push(obj);
-      } else if (value) {
-        currentArray.push(parseYamlValue(value));
-      } else {
-        // Bloc nested après le tiret
-        const nested = parseYamlLines(lines.slice(i + 1), indent + 2);
-        currentArray.push(nested.value);
-        i += nested.endIndex;
-      }
-      i++;
-      continue;
-    }
-
-    // Paire clé:valeur
-    const colonIndex = trimmed.indexOf(':');
-    if (colonIndex > 0) {
-      if (currentArray && currentKey) {
-        result[currentKey] = currentArray;
-        currentArray = null;
-      }
-
-      const key = trimmed.substring(0, colonIndex).trim();
-      const value = trimmed.substring(colonIndex + 1).trim();
-
-      if (value) {
-        result[key] = parseYamlValue(value);
-      } else {
-        // Bloc nested
-        currentKey = key;
-        const nested = parseYamlLines(lines.slice(i + 1), indent + 2);
-        result[key] = nested.value;
-        i += nested.endIndex;
-      }
-    }
-
-    i++;
+  // Match INSERT INTO statements
+  const insertMatch = input.match(/INSERT\s+INTO\s+\w+\s*\(([^)]+)\)\s*VALUES/i);
+  if (!insertMatch) {
+    throw new ConversionError(
+      'Invalid SQL format',
+      'Expected INSERT INTO table (columns) VALUES (...) statement'
+    );
   }
 
-  if (currentArray && currentKey) {
-    result[currentKey] = currentArray;
-  } else if (currentArray) {
-    return { value: currentArray, endIndex: i };
+  const columns = insertMatch[1].split(',').map(c => c.trim().replace(/["`[\]]/g, ''));
+  const result: DataArray = [];
+
+  // Match all value tuples
+  const valuesSection = input.slice(input.toUpperCase().indexOf('VALUES') + 6);
+  const tupleRegex = /\(([^)]+)\)/g;
+  let match;
+
+  while ((match = tupleRegex.exec(valuesSection)) !== null) {
+    const values = parseSQLValueTuple(match[1]);
+    const row: DataRow = {};
+    columns.forEach((col, i) => {
+      row[col] = values[i] ?? null;
+    });
+    result.push(row);
   }
 
-  return { value: result, endIndex: i };
+  if (result.length === 0) {
+    throw new ConversionError('No data found in SQL statement');
+  }
+
+  return result;
 }
 
-function parseYamlValue(value: string): unknown {
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  if (value === 'null' || value === '~') return null;
+function parseSQLValueTuple(tupleStr: string): unknown[] {
+  const values: unknown[] = [];
+  let current = '';
+  let inString = false;
+  let stringChar = '';
+
+  for (let i = 0; i < tupleStr.length; i++) {
+    const char = tupleStr[i];
+
+    if ((char === "'" || char === '"') && !inString) {
+      inString = true;
+      stringChar = char;
+    } else if (char === stringChar && inString) {
+      if (tupleStr[i + 1] === stringChar) {
+        current += char;
+        i++;
+      } else {
+        inString = false;
+        stringChar = '';
+      }
+    } else if (char === ',' && !inString) {
+      values.push(parseSQLValue(current.trim()));
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  if (current.trim()) {
+    values.push(parseSQLValue(current.trim()));
+  }
+
+  return values;
+}
+
+function parseSQLValue(value: string): unknown {
+  const upper = value.toUpperCase();
+  if (upper === 'NULL') return null;
+  if (upper === 'TRUE') return true;
+  if (upper === 'FALSE') return false;
   if (/^-?\d+$/.test(value)) return parseInt(value, 10);
   if (/^-?\d*\.\d+$/.test(value)) return parseFloat(value);
-  // Retirer les guillemets
-  if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-    return value.slice(1, -1);
+  // Remove quotes
+  if ((value.startsWith("'") && value.endsWith("'")) ||
+      (value.startsWith('"') && value.endsWith('"'))) {
+    return value.slice(1, -1).replace(/''/g, "'").replace(/""/g, '"');
   }
   return value;
 }
 
+function parseMarkdown(input: string): DataArray {
+  validateInput(input, 'Markdown');
+
+  const lines = input.trim().split('\n').filter(l => l.trim());
+
+  if (lines.length < 2) {
+    throw new ConversionError(
+      'Invalid Markdown table',
+      'Table must have at least a header row and separator row'
+    );
+  }
+
+  // Parse header
+  const headerLine = lines[0];
+  if (!headerLine.includes('|')) {
+    throw new ConversionError('Invalid Markdown table format', 'Missing pipe separators');
+  }
+
+  const headers = headerLine
+    .split('|')
+    .map(h => h.trim())
+    .filter(Boolean);
+
+  // Validate separator line
+  const separatorLine = lines[1];
+  if (!/^[\s|:-]+$/.test(separatorLine)) {
+    throw new ConversionError('Invalid Markdown table', 'Missing or invalid separator row');
+  }
+
+  // Parse data rows
+  const result: DataArray = [];
+  for (let i = 2; i < lines.length; i++) {
+    const cells = lines[i].split('|').map(c => c.trim()).filter(Boolean);
+    const row: DataRow = {};
+    headers.forEach((header, j) => {
+      row[header] = cells[j] || '';
+    });
+    result.push(row);
+  }
+
+  if (result.length === 0) {
+    throw new ConversionError('Markdown table has no data rows');
+  }
+
+  return result;
+}
+
+function parseHTML(input: string): DataArray {
+  validateInput(input, 'HTML');
+
+  if (typeof DOMParser === 'undefined') {
+    throw new ConversionError('HTML parsing not available in this environment');
+  }
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, 'text/html');
+  const table = doc.querySelector('table');
+
+  if (!table) {
+    throw new ConversionError('No table found in HTML', 'Input must contain a <table> element');
+  }
+
+  // Get headers
+  const headers: string[] = [];
+  const headerRow = table.querySelector('thead tr') || table.querySelector('tr');
+  if (headerRow) {
+    headerRow.querySelectorAll('th, td').forEach(cell => {
+      headers.push(cell.textContent?.trim() || '');
+    });
+  }
+
+  if (headers.length === 0) {
+    throw new ConversionError('No table headers found');
+  }
+
+  // Get data rows
+  const result: DataArray = [];
+  const tbody = table.querySelector('tbody') || table;
+  const rows = tbody.querySelectorAll('tr');
+
+  rows.forEach((row, idx) => {
+    // Skip header row if no thead
+    if (idx === 0 && !table.querySelector('thead')) return;
+
+    const cells = row.querySelectorAll('td');
+    if (cells.length === 0) return;
+
+    const rowData: DataRow = {};
+    cells.forEach((cell, i) => {
+      const header = headers[i] || `column_${i + 1}`;
+      rowData[header] = cell.textContent?.trim() || '';
+    });
+    result.push(rowData);
+  });
+
+  if (result.length === 0) {
+    throw new ConversionError('HTML table has no data rows');
+  }
+
+  return result;
+}
+
 // ============================================
-// SERIALIZERS - Convertissent objet JS -> string
+// SERIALIZERS
 // ============================================
 
-function toJson(data: unknown): string {
+function toJSON(data: unknown): string {
   return JSON.stringify(data, null, 2);
 }
 
-function toCsv(data: unknown): string {
+function toCSV(data: unknown): string {
   const array = normalizeToArray(data);
-  if (array.length === 0) return '';
+  const keys = collectAllKeys(array);
 
-  // Collecter toutes les clés uniques
-  const allKeys = new Set<string>();
-  array.forEach((item) => {
-    if (typeof item === 'object' && item !== null) {
-      Object.keys(item).forEach((key) => allKeys.add(key));
-    }
-  });
-
-  const headers = Array.from(allKeys);
-  const lines: string[] = [headers.join(',')];
-
-  array.forEach((item) => {
-    const values = headers.map((header) => {
-      const value = (item as Record<string, unknown>)[header];
-      return escapeCsvValue(value);
+  const csvData = array.map(row => {
+    const newRow: DataRow = {};
+    keys.forEach(key => {
+      newRow[key] = sanitizeString(row[key]);
     });
-    lines.push(values.join(','));
+    return newRow;
   });
 
-  return lines.join('\n');
+  return Papa.unparse(csvData, {
+    header: true,
+    quotes: true,
+    quoteChar: '"',
+    escapeChar: '"',
+    newline: '\n',
+  });
 }
 
-function escapeCsvValue(value: unknown): string {
-  if (value === null || value === undefined) return '';
-  const str = String(value);
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
-}
-
-function toXml(data: unknown, rootName = 'root'): string {
+function toXML(data: unknown, rootName = 'root'): string {
   const lines: string[] = ['<?xml version="1.0" encoding="UTF-8"?>'];
-  lines.push(objectToXml(data, rootName, 0));
+  lines.push(objectToXML(data, rootName, 0));
   return lines.join('\n');
 }
 
-function objectToXml(data: unknown, tagName: string, indent: number): string {
+function objectToXML(data: unknown, tagName: string, indent: number): string {
   const spaces = '  '.repeat(indent);
+  const safeTagName = tagName.replace(/[^a-zA-Z0-9_-]/g, '_');
 
   if (data === null || data === undefined) {
-    return `${spaces}<${tagName}/>`;
+    return `${spaces}<${safeTagName}/>`;
   }
 
   if (typeof data !== 'object') {
-    return `${spaces}<${tagName}>${escapeXml(String(data))}</${tagName}>`;
+    return `${spaces}<${safeTagName}>${escapeXML(String(data))}</${safeTagName}>`;
   }
 
   if (Array.isArray(data)) {
-    const singularName = tagName.endsWith('s') ? tagName.slice(0, -1) : 'item';
-    return data.map((item) => objectToXml(item, singularName, indent)).join('\n');
+    const itemName = safeTagName.endsWith('s') ? safeTagName.slice(0, -1) : 'item';
+    return data.map(item => objectToXML(item, itemName, indent)).join('\n');
   }
 
   const obj = data as Record<string, unknown>;
-  const children = Object.entries(obj)
-    .filter(([key]) => !key.startsWith('@'))
-    .map(([key, value]) => objectToXml(value, key, indent + 1))
-    .join('\n');
+  const entries = Object.entries(obj).filter(([key]) => !key.startsWith('@'));
 
-  if (!children) {
-    return `${spaces}<${tagName}/>`;
+  if (entries.length === 0) {
+    return `${spaces}<${safeTagName}/>`;
   }
 
-  return `${spaces}<${tagName}>\n${children}\n${spaces}</${tagName}>`;
+  const children = entries
+    .map(([key, value]) => objectToXML(value, key, indent + 1))
+    .join('\n');
+
+  return `${spaces}<${safeTagName}>\n${children}\n${spaces}</${safeTagName}>`;
 }
 
-function escapeXml(str: string): string {
+function escapeXML(str: string): string {
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -320,266 +525,242 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;');
 }
 
-function toYaml(data: unknown, indent = 0): string {
-  const spaces = '  '.repeat(indent);
-
-  if (data === null || data === undefined) {
-    return 'null';
-  }
-
-  if (typeof data === 'boolean') {
-    return data ? 'true' : 'false';
-  }
-
-  if (typeof data === 'number') {
-    return String(data);
-  }
-
-  if (typeof data === 'string') {
-    if (data.includes('\n') || data.includes(':') || data.includes('#')) {
-      return `"${data.replace(/"/g, '\\"')}"`;
-    }
-    return data;
-  }
-
-  if (Array.isArray(data)) {
-    if (data.length === 0) return '[]';
-    return data
-      .map((item) => {
-        if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
-          const objLines = Object.entries(item)
-            .map(([k, v], i) => {
-              const prefix = i === 0 ? '- ' : '  ';
-              return `${spaces}${prefix}${k}: ${toYaml(v, 0)}`;
-            })
-            .join('\n');
-          return objLines;
-        }
-        return `${spaces}- ${toYaml(item, indent + 1)}`;
-      })
-      .join('\n');
-  }
-
-  if (typeof data === 'object') {
-    const obj = data as Record<string, unknown>;
-    const entries = Object.entries(obj);
-    if (entries.length === 0) return '{}';
-
-    return entries
-      .map(([key, value]) => {
-        if (typeof value === 'object' && value !== null) {
-          return `${spaces}${key}:\n${toYaml(value, indent + 1)}`;
-        }
-        return `${spaces}${key}: ${toYaml(value, 0)}`;
-      })
-      .join('\n');
-  }
-
-  return String(data);
+function toYAML(data: unknown): string {
+  return yaml.dump(data, {
+    indent: 2,
+    lineWidth: 120,
+    noRefs: true,
+    sortKeys: false,
+    quotingType: '"',
+    forceQuotes: false,
+  });
 }
 
-function toSql(data: unknown, tableName = 'data'): string {
+function toSQL(data: unknown, tableName = 'data_table'): string {
   const array = normalizeToArray(data);
-  if (array.length === 0) return `-- Aucune donnée à convertir`;
+  const keys = collectAllKeys(array);
 
-  // Collecter toutes les clés
-  const allKeys = new Set<string>();
-  array.forEach((item) => {
-    if (typeof item === 'object' && item !== null) {
-      Object.keys(item).forEach((key) => allKeys.add(key));
-    }
+  if (keys.length === 0 || array.length === 0) {
+    return '-- No data to convert';
+  }
+
+  const lines: string[] = [];
+
+  // Generate CREATE TABLE statement
+  lines.push(`-- Generated SQL for ${array.length} row(s)`);
+  lines.push(`-- Table structure`);
+  lines.push(`CREATE TABLE IF NOT EXISTS ${tableName} (`);
+
+  const columnDefs = keys.map((key, idx) => {
+    // Infer type from first non-null value
+    const sampleValue = array.find(row => row[key] !== null && row[key] !== undefined)?.[key];
+    const sqlType = inferSqlType(sampleValue);
+    const safeKey = key.replace(/[^a-zA-Z0-9_]/g, '_');
+    const comma = idx < keys.length - 1 ? ',' : '';
+    return `  ${safeKey} ${sqlType}${comma}`;
   });
 
-  const columns = Array.from(allKeys);
-  const lines: string[] = [`INSERT INTO ${tableName} (${columns.join(', ')}) VALUES`];
+  lines.push(...columnDefs);
+  lines.push(');');
+  lines.push('');
+  lines.push('-- Data insertion');
 
-  const values = array.map((item, index) => {
-    const obj = item as Record<string, unknown>;
-    const vals = columns.map((col) => formatSqlValue(obj[col]));
-    const isLast = index === array.length - 1;
-    return `  (${vals.join(', ')})${isLast ? ';' : ','}`;
+  const safeKeys = keys.map(k => k.replace(/[^a-zA-Z0-9_]/g, '_'));
+  lines.push(`INSERT INTO ${tableName} (${safeKeys.join(', ')}) VALUES`);
+
+  const valueRows = array.map((row, idx) => {
+    const values = keys.map(key => formatSQLValue(row[key]));
+    const isLast = idx === array.length - 1;
+    return `  (${values.join(', ')})${isLast ? ';' : ','}`;
   });
 
-  return lines.concat(values).join('\n');
+  lines.push(...valueRows);
+
+  return lines.join('\n');
 }
 
-function formatSqlValue(value: unknown): string {
+function formatSQLValue(value: unknown): string {
   if (value === null || value === undefined) return 'NULL';
   if (typeof value === 'number') return String(value);
-  if (typeof value === 'boolean') return value ? '1' : '0';
-  // Escape quotes pour SQL
+  if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
   const str = String(value).replace(/'/g, "''");
   return `'${str}'`;
 }
 
-// ============================================
-// UTILITAIRES
-// ============================================
+function toMarkdown(data: unknown): string {
+  const array = normalizeToArray(data);
+  const keys = collectAllKeys(array);
 
-function normalizeToArray(data: unknown): unknown[] {
-  if (Array.isArray(data)) return data;
-  if (typeof data === 'object' && data !== null) {
-    // Chercher un tableau nested (ex: { users: [...] })
-    const values = Object.values(data);
-    for (const value of values) {
-      if (Array.isArray(value)) return value;
-    }
-    // Sinon, retourner l'objet comme élément unique
-    return [data];
-  }
-  return [data];
+  if (keys.length === 0) return '';
+
+  // Calculate column widths for alignment
+  const widths: number[] = keys.map(key => {
+    const headerWidth = key.length;
+    const maxDataWidth = Math.max(
+      ...array.map(row => sanitizeString(row[key]).length)
+    );
+    return Math.max(headerWidth, maxDataWidth, 3);
+  });
+
+  const lines: string[] = [];
+
+  // Header row
+  const header = keys.map((key, i) => key.padEnd(widths[i])).join(' | ');
+  lines.push(`| ${header} |`);
+
+  // Separator row
+  const separator = widths.map(w => '-'.repeat(w)).join(' | ');
+  lines.push(`| ${separator} |`);
+
+  // Data rows
+  array.forEach(row => {
+    const cells = keys.map((key, i) => {
+      const value = sanitizeString(row[key]).replace(/\|/g, '\\|');
+      return value.padEnd(widths[i]);
+    });
+    lines.push(`| ${cells.join(' | ')} |`);
+  });
+
+  return lines.join('\n');
+}
+
+function toHTML(data: unknown): string {
+  const array = normalizeToArray(data);
+  const keys = collectAllKeys(array);
+
+  if (keys.length === 0) return '<table></table>';
+
+  const lines: string[] = [
+    '<table class="data-table">',
+    '  <thead>',
+    '    <tr>',
+  ];
+
+  keys.forEach(key => {
+    lines.push(`      <th>${escapeHTML(key)}</th>`);
+  });
+
+  lines.push('    </tr>', '  </thead>', '  <tbody>');
+
+  array.forEach(row => {
+    lines.push('    <tr>');
+    keys.forEach(key => {
+      const value = sanitizeString(row[key]);
+      lines.push(`      <td>${escapeHTML(value)}</td>`);
+    });
+    lines.push('    </tr>');
+  });
+
+  lines.push('  </tbody>', '</table>');
+
+  return lines.join('\n');
+}
+
+function escapeHTML(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 // ============================================
-// CONVERTISSEUR PRINCIPAL
+// CONVERTER MATRIX
 // ============================================
 
-type ConverterFn = (input: string) => string;
+type ParserFn = (input: string) => unknown;
+type SerializerFn = (data: unknown) => string;
 
-const CONVERTERS: Record<string, Record<string, ConverterFn>> = {
-  json: {
-    csv: (input) => toCsv(parseJson(input)),
-    xml: (input) => toXml(parseJson(input)),
-    yaml: (input) => toYaml(parseJson(input)),
-    sql: (input) => toSql(parseJson(input)),
-  },
-  csv: {
-    json: (input) => toJson(parseCsv(input)),
-    xml: (input) => toXml({ items: parseCsv(input) }, 'data'),
-    yaml: (input) => toYaml(parseCsv(input)),
-    sql: (input) => toSql(parseCsv(input)),
-  },
-  xml: {
-    json: (input) => toJson(parseXml(input)),
-    csv: (input) => toCsv(parseXml(input)),
-    yaml: (input) => toYaml(parseXml(input)),
-    sql: (input) => toSql(parseXml(input)),
-  },
-  yaml: {
-    json: (input) => toJson(parseYaml(input)),
-    csv: (input) => toCsv(parseYaml(input)),
-    xml: (input) => toXml(parseYaml(input)),
-    sql: (input) => toSql(parseYaml(input)),
-  },
-  sql: {
-    // SQL vers autres formats - parse les INSERT statements
-    json: (input) => toJson(parseSqlInsert(input)),
-    csv: (input) => toCsv(parseSqlInsert(input)),
-    xml: (input) => toXml({ records: parseSqlInsert(input) }, 'data'),
-    yaml: (input) => toYaml(parseSqlInsert(input)),
-  },
+const PARSERS: Record<string, ParserFn> = {
+  json: parseJSON,
+  csv: parseCSV,
+  xml: parseXML,
+  yaml: parseYAML,
+  sql: parseSQL,
+  markdown: parseMarkdown,
+  html: parseHTML,
 };
 
-function parseSqlInsert(input: string): Array<Record<string, unknown>> {
-  const result: Array<Record<string, unknown>> = [];
-
-  // Regex pour extraire les colonnes
-  const columnsMatch = input.match(/INSERT INTO \w+\s*\(([^)]+)\)/i);
-  if (!columnsMatch) {
-    throw new Error('Format SQL INSERT invalide');
-  }
-
-  const columns = columnsMatch[1].split(',').map((c) => c.trim());
-
-  // Regex pour extraire les valeurs
-  const valuesRegex = /\(([^)]+)\)/g;
-  let match;
-
-  // Ignorer la première correspondance (colonnes)
-  const valuesSection = input.substring(input.indexOf('VALUES') + 6);
-
-  while ((match = valuesRegex.exec(valuesSection)) !== null) {
-    const values = parseSqlValues(match[1]);
-    const row: Record<string, unknown> = {};
-
-    columns.forEach((col, i) => {
-      row[col] = values[i];
-    });
-
-    result.push(row);
-  }
-
-  return result;
-}
-
-function parseSqlValues(valuesStr: string): unknown[] {
-  const values: unknown[] = [];
-  let current = '';
-  let inString = false;
-  let stringChar = '';
-
-  for (let i = 0; i < valuesStr.length; i++) {
-    const char = valuesStr[i];
-
-    if ((char === "'" || char === '"') && !inString) {
-      inString = true;
-      stringChar = char;
-    } else if (char === stringChar && inString) {
-      if (valuesStr[i + 1] === stringChar) {
-        current += char;
-        i++;
-      } else {
-        inString = false;
-        stringChar = '';
-      }
-    } else if (char === ',' && !inString) {
-      values.push(parseSqlValue(current.trim()));
-      current = '';
-    } else {
-      current += char;
-    }
-  }
-
-  if (current.trim()) {
-    values.push(parseSqlValue(current.trim()));
-  }
-
-  return values;
-}
-
-function parseSqlValue(value: string): unknown {
-  if (value.toUpperCase() === 'NULL') return null;
-  if (/^-?\d+$/.test(value)) return parseInt(value, 10);
-  if (/^-?\d*\.\d+$/.test(value)) return parseFloat(value);
-  // Retirer les guillemets
-  if ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))) {
-    return value.slice(1, -1).replace(/''/g, "'").replace(/""/g, '"');
-  }
-  return value;
-}
+const SERIALIZERS: Record<string, SerializerFn> = {
+  json: toJSON,
+  csv: toCSV,
+  xml: (data) => toXML(data, 'data'),
+  yaml: toYAML,
+  sql: toSQL,
+  markdown: toMarkdown,
+  html: toHTML,
+};
 
 // ============================================
-// API PUBLIQUE
+// PUBLIC API
 // ============================================
 
 export function convert(source: string, target: string, input: string): ConversionResult {
   try {
-    const converter = CONVERTERS[source]?.[target];
+    const parser = PARSERS[source];
+    const serializer = SERIALIZERS[target];
 
-    if (!converter) {
+    if (!parser) {
       return {
         success: false,
-        error: `Conversion ${source} vers ${target} non supportée`,
+        error: `Unsupported source format: ${source}`,
       };
     }
 
-    if (!input.trim()) {
+    if (!serializer) {
       return {
         success: false,
-        error: 'Veuillez entrer des données à convertir',
+        error: `Unsupported target format: ${target}`,
       };
     }
 
-    const result = converter(input);
+    // Parse source data
+    const parsed = parser(input);
+
+    // Serialize to target format
+    const result = serializer(parsed);
+
+    // Calculate row count for feedback
+    const array = normalizeToArray(parsed);
 
     return {
       success: true,
       data: result,
+      rowCount: array.length,
     };
   } catch (error) {
+    if (error instanceof ConversionError) {
+      return {
+        success: false,
+        error: error.message,
+        details: error.details,
+      };
+    }
+
+    const e = error as Error;
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Erreur de conversion inconnue',
+      error: 'Conversion failed',
+      details: e.message,
     };
   }
 }
+
+// Export for testing
+export const __testing = {
+  parseJSON,
+  parseCSV,
+  parseXML,
+  parseYAML,
+  parseSQL,
+  parseMarkdown,
+  parseHTML,
+  toJSON,
+  toCSV,
+  toXML,
+  toYAML,
+  toSQL,
+  toMarkdown,
+  toHTML,
+};
