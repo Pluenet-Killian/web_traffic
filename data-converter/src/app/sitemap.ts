@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllConversions, getConversionSlug } from '@/config/formats';
 import { locales, localeHtmlLang } from '@/config/i18n';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://data-converter.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://data-converter.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const conversions = getAllConversions();

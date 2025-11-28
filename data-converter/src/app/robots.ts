@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://data-converter.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://data-converter.com';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,9 +8,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/private/'],
       },
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

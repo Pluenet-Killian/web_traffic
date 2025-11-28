@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Data Converter
+
+A high-performance, SEO-optimized data format converter built with Next.js 14. Converts between JSON, CSV, XML, YAML, SQL, Markdown, and HTML formats entirely client-side for maximum privacy.
+
+## Features
+
+- **7 Data Formats**: JSON, CSV, XML, YAML, SQL, Markdown, HTML Table
+- **42 Conversion Combinations**: All possible format pairs
+- **5 Languages**: English, French, Spanish, German, Portuguese
+- **221 Static Pages**: Pre-rendered for optimal SEO and performance
+- **100% Client-Side**: No data ever leaves the browser
+- **Drag & Drop**: File upload support
+- **Mobile Responsive**: Works on all devices
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **CSV Parsing**: PapaParse
+- **YAML Parsing**: js-yaml
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <your-repo-url>
+cd data-converter
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env.local
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file with:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```env
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_ADSENSE_ID=ca-pub-XXXXXXXXXX
+```
 
-## Learn More
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_SITE_URL` | Your production domain (for sitemap, canonical URLs) | Yes |
+| `NEXT_PUBLIC_ADSENSE_ID` | Google AdSense Publisher ID | No |
 
-To learn more about Next.js, take a look at the following resources:
+### Build for Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/
+│   ├── [lang]/
+│   │   ├── [slug]/
+│   │   │   └── page.tsx      # Conversion pages
+│   │   ├── layout.tsx        # Language layout with hreflang
+│   │   ├── page.tsx          # Homepage
+│   │   └── not-found.tsx     # 404 page
+│   ├── layout.tsx            # Root layout
+│   ├── robots.ts             # robots.txt generation
+│   ├── sitemap.ts            # sitemap.xml generation
+│   └── not-found.tsx         # Root 404
+├── components/
+│   ├── converter-ui.tsx      # Main converter component
+│   ├── ad-unit.tsx           # Ad placeholders
+│   └── toast.tsx             # Toast notifications
+├── config/
+│   ├── formats.ts            # Format definitions
+│   ├── i18n.ts               # i18n configuration
+│   └── content-matrix.ts     # SEO content per conversion
+├── dictionaries/
+│   ├── en.json               # English translations
+│   ├── fr.json               # French translations
+│   ├── es.json               # Spanish translations
+│   ├── de.json               # German translations
+│   ├── pt.json               # Portuguese translations
+│   └── index.ts              # Dictionary loader
+├── lib/
+│   └── converters.ts         # Conversion logic
+└── middleware.ts             # Locale detection
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## URL Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+/                    → Redirects to /en
+/en                  → English homepage
+/fr                  → French homepage
+/en/json-to-csv      → JSON to CSV converter (English)
+/fr/json-to-csv      → JSON to CSV converter (French)
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push to GitHub
+2. Import project in Vercel
+3. Set environment variables
+4. Deploy
+
+### Other Platforms
+
+The project exports as static HTML. Deploy to any static hosting:
+
+```bash
+npm run build
+# Output in .next/ directory
+```
+
+## SEO Features
+
+- Dynamic meta tags per conversion
+- JSON-LD structured data (SoftwareApplication, FAQPage)
+- Automatic sitemap.xml generation
+- hreflang tags for all languages
+- Canonical URLs
+- Open Graph tags
+
+## License
+
+MIT

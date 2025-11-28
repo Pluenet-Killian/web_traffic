@@ -8,7 +8,7 @@ import '../globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://data-converter.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://data-converter.com';
 
 interface LayoutProps {
   children: React.ReactNode;

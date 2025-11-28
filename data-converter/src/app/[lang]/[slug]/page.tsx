@@ -17,7 +17,7 @@ import { getConversionContent } from '@/config/content-matrix';
 import ConverterUI from '@/components/converter-ui';
 import AdUnit, { AdSidebar } from '@/components/ad-unit';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://data-converter.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://data-converter.com';
 
 interface PageProps {
   params: Promise<{ lang: Locale; slug: string }>;
