@@ -68,6 +68,15 @@ const LEGAL_LINKS: Record<string, { privacy: string; terms: string; cookies: str
   es: { privacy: 'Privacidad', terms: 'Términos', cookies: 'Cookies' },
   de: { privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', cookies: 'Cookies' },
   pt: { privacy: 'Privacidade', terms: 'Termos', cookies: 'Cookies' },
+  it: { privacy: 'Privacy', terms: 'Termini', cookies: 'Cookie' },
+  nl: { privacy: 'Privacy', terms: 'Voorwaarden', cookies: 'Cookies' },
+  sv: { privacy: 'Integritet', terms: 'Villkor', cookies: 'Cookies' },
+  da: { privacy: 'Privatliv', terms: 'Vilkår', cookies: 'Cookies' },
+  no: { privacy: 'Personvern', terms: 'Vilkår', cookies: 'Cookies' },
+  fi: { privacy: 'Tietosuoja', terms: 'Ehdot', cookies: 'Evästeet' },
+  pl: { privacy: 'Prywatność', terms: 'Regulamin', cookies: 'Cookies' },
+  tr: { privacy: 'Gizlilik', terms: 'Şartlar', cookies: 'Çerezler' },
+  id: { privacy: 'Privasi', terms: 'Ketentuan', cookies: 'Cookie' },
 };
 
 export default function FatFooter({ lang, dict }: FatFooterProps) {

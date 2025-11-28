@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Ilmainen online-tietomuodon muunnin. Muunna JSON, CSV, XML, YAML, SQL, Markdown ja HTML välittömästi.",
+    "titleTemplate": "Muunna {source} muotoon {target} - Ilmainen & Turvallinen Työkalu",
+    "descriptionTemplate": "Muunna {source} tiedostosi muotoon {target} välittömästi. 100% ilmainen työkalu, asiakaspuolen käsittely, tietoja ei lähetetä palvelimelle. Nopea ja turvallinen."
+  },
+  "common": {
+    "home": "Koti",
+    "allConverters": "Kaikki Muuntimet",
+    "popularConversions": "Suositut Muunnokset",
+    "relatedConversions": "Liittyvät Muunnokset",
+    "supportedFormats": "Tuetut Muodot",
+    "learnMore": "Lue lisää",
+    "backToHome": "Takaisin Kotiin",
+    "previousPage": "Edellinen Sivu",
+    "pageNotFound": "Sivua Ei Löydy",
+    "pageNotFoundDesc": "Tätä muunnosta ei ole olemassa tai URL on virheellinen."
+  },
+  "converter": {
+    "input": "Syöte",
+    "output": "Tuloste",
+    "convert": "Muunna",
+    "converting": "Muunnetaan...",
+    "copy": "Kopioi",
+    "copied": "Kopioitu!",
+    "download": "Lataa",
+    "clear": "Tyhjennä",
+    "loadExample": "Lataa Esimerkki",
+    "importFile": "Tuo Tiedosto",
+    "pasteHere": "Liitä {format} tähän...",
+    "resultHere": "{format} tulos näkyy tässä...",
+    "conversionError": "Muunnosvirhe",
+    "securityNotice": "100% paikallinen käsittely - Tietosi eivät koskaan poistu selaimestasi",
+    "conversionSuccess": "Muunnos onnistui",
+    "rows": "riviä",
+    "copiedToClipboard": "Kopioitu leikepöydälle",
+    "downloadStarted": "Lataus aloitettu",
+    "fileLoaded": "Tiedosto ladattu",
+    "fileReadError": "Virhe tiedoston lukemisessa",
+    "dropFile": "Pudota tiedostosi tähän",
+    "dragDropHint": "Vedä ja pudota tiedosto tai liitä tietosi",
+    "exampleLoaded": "Esimerkkidata ladattu"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Ilmainen & Turvallinen",
+    "heroDescription": "Muunna JSON, CSV, XML, YAML, SQL, Markdown ja HTML tiedostosi välittömästi. 100% asiakaspuoli - Tietosi pysyvät yksityisinä.",
+    "possibleConversions": "Mahdolliset Muunnokset",
+    "instantProcessing": "Välitön Käsittely",
+    "privacyFirst": "Yksityisyys Ensin",
+    "chooseConversion": "Valitse Muunnoksesi",
+    "chooseConversionDesc": "Napsauta muunnosta päästäksesi työkaluun. Kaikki muunnokset suoritetaan paikallisesti selaimessasi.",
+    "whyUseUs": "Miksi Käyttää Muunnintamme?",
+    "feature1Title": "100% Turvallinen",
+    "feature1Desc": "Tietosi eivät koskaan poistu selaimestasi. Ei latauksia palvelimillemme, täysin paikallinen käsittely.",
+    "feature2Title": "Erittäin Nopea",
+    "feature2Desc": "Välitön muunnos asiakaspuolen käsittelyn ansiosta. Ei odotusta, ei jonoa.",
+    "feature3Title": "Ilmainen & Rajoittamaton",
+    "feature3Desc": "Ei tiedostorajoituksia, ei tiliä tarvita. Muunna niin paljon kuin haluat, ilmaiseksi.",
+    "allConversions": "Kaikki Saatavilla Olevat Muunnokset"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Kevyt tiedonvaihtomuoto"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Yksinkertainen taulukkomuoto"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Rakenteellinen merkintämuoto"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Luettava konfigurointimuoto"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - INSERT-lauseet tietokannoille"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Kevyt merkintäkieli muotoillulle tekstille"
+    },
+    "html": {
+      "label": "HTML Taulukko",
+      "description": "HTML-taulukon merkintä web-näyttöä varten"
+    }
+  },
+  "faq": {
+    "q1": "Miksi muuntaa {source} muotoon {target}?",
+    "a1": "Muunnos {source} muotoon {target} on hyödyllinen, kun sinun täytyy integroida tietoja järjestelmään, joka hyväksyy vain {target} muodon. {sourceDesc} voidaan muuntaa muotoon {target} ({targetDesc}) paremman yhteensopivuuden saavuttamiseksi.",
+    "q2": "Ovatko tietoni turvassa muunnoksen aikana?",
+    "a2": "Ehdottomasti. Muuntimemme toimii 100% asiakaspuolella (selaimessasi). {source} tietojasi ei koskaan lähetetä ulkoiselle palvelimelle. Käsittely on välitön ja täysin yksityinen.",
+    "q3": "Mikä on suurin tuettu {source} tiedostokoko?",
+    "a3": "Koska käsittely tapahtuu selaimessasi, raja riippuu käytettävissä olevasta muistista. Yleensä jopa 10 MB tiedostot käsitellään ongelmitta. Suuremmille tiedostoille suosittelemme niiden jakamista.",
+    "q4": "Miten {source} muotoon {target} muunnos toimii?",
+    "a4": "Työkalumme jäsentää {source} tiedostosi, analysoi tietorakenteen ja luo sitten vastaavan {target} muodossa. Taulukot, objektit ja primitiiviset arvot kartoitetaan älykkäästi {target} syntaksiin.",
+    "q5": "Voinko muuntaa {target} muotoon {source}?",
+    "a5": "Kyllä! Tuemme kaksisuuntaista muunnosta. Käytä {target} muotoon {source} muunnintamme käänteiseen toimintoon."
+  },
+  "seo": {
+    "h1Template": "{source} muotoon {target} Muunnin",
+    "introTemplate": "Muunna helposti {source} tietosi ({sourceDesc}) {target} muotoon ({targetDesc}). Työkalumme toimii kokonaan selaimessasi taatakseen tietojesi yksityisyyden.",
+    "reverseConversion": "Tarvitsetko käänteisen muunnoksen?",
+    "convertReverse": "Muunna {target} → {source}",
+    "useCasesTitle": "Yleiset Käyttötapaukset",
+    "benefitsTitle": "Edut",
+    "technicalNoteTitle": "Tekniset Tiedot"
+  },
+  "footer": {
+    "aboutText": "Muunna tietosi JSON, CSV, XML, YAML, SQL, Markdown ja HTML välillä ilmaiseksi. Työkalumme toimii kokonaan selaimessasi taatakseen tietojesi yksityisyyden.",
+    "info": "Tietoa",
+    "privacyPolicy": "Tietosuojakäytäntö",
+    "termsOfService": "Käyttöehdot",
+    "contact": "Yhteystiedot",
+    "copyright": "Kaikki oikeudet pidätetään.",
+    "securityNote": "100% asiakaspuolen käsittely - Tietosi eivät koskaan poistu selaimestasi."
+  }
+}

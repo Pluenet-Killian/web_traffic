@@ -9,7 +9,7 @@ interface CookieConsentProps {
   lang: Locale;
 }
 
-const TRANSLATIONS = {
+const TRANSLATIONS: Record<string, { title: string; description: string; acceptAll: string; rejectAll: string; learnMore: string }> = {
   en: {
     title: 'We value your privacy',
     description: 'We use cookies to analyze our traffic and show you relevant ads. Your files are processed locally and never leave your device.',
@@ -44,6 +44,69 @@ const TRANSLATIONS = {
     acceptAll: 'Aceitar tudo',
     rejectAll: 'Rejeitar tudo',
     learnMore: 'Saiba mais',
+  },
+  it: {
+    title: 'Rispettiamo la tua privacy',
+    description: 'Utilizziamo i cookie per analizzare il nostro traffico e mostrarti annunci pertinenti. I tuoi file vengono elaborati localmente e non lasciano mai il tuo dispositivo.',
+    acceptAll: 'Accetta tutto',
+    rejectAll: 'Rifiuta tutto',
+    learnMore: 'Scopri di più',
+  },
+  nl: {
+    title: 'Wij respecteren uw privacy',
+    description: 'We gebruiken cookies om ons verkeer te analyseren en u relevante advertenties te tonen. Uw bestanden worden lokaal verwerkt en verlaten nooit uw apparaat.',
+    acceptAll: 'Alles accepteren',
+    rejectAll: 'Alles weigeren',
+    learnMore: 'Meer info',
+  },
+  sv: {
+    title: 'Vi värdesätter din integritet',
+    description: 'Vi använder cookies för att analysera vår trafik och visa dig relevanta annonser. Dina filer bearbetas lokalt och lämnar aldrig din enhet.',
+    acceptAll: 'Acceptera alla',
+    rejectAll: 'Avvisa alla',
+    learnMore: 'Läs mer',
+  },
+  da: {
+    title: 'Vi respekterer dit privatliv',
+    description: 'Vi bruger cookies til at analysere vores trafik og vise dig relevante annoncer. Dine filer behandles lokalt og forlader aldrig din enhed.',
+    acceptAll: 'Accepter alle',
+    rejectAll: 'Afvis alle',
+    learnMore: 'Læs mere',
+  },
+  no: {
+    title: 'Vi respekterer personvernet ditt',
+    description: 'Vi bruker informasjonskapsler for å analysere trafikken vår og vise deg relevante annonser. Filene dine behandles lokalt og forlater aldri enheten din.',
+    acceptAll: 'Godta alle',
+    rejectAll: 'Avvis alle',
+    learnMore: 'Les mer',
+  },
+  fi: {
+    title: 'Arvostamme yksityisyyttäsi',
+    description: 'Käytämme evästeitä analysoidaksemme liikennettämme ja näyttääksemme sinulle asiaankuuluvia mainoksia. Tiedostosi käsitellään paikallisesti eivätkä ne koskaan poistu laitteestasi.',
+    acceptAll: 'Hyväksy kaikki',
+    rejectAll: 'Hylkää kaikki',
+    learnMore: 'Lue lisää',
+  },
+  pl: {
+    title: 'Szanujemy Twoją prywatność',
+    description: 'Używamy plików cookie do analizy ruchu i wyświetlania odpowiednich reklam. Twoje pliki są przetwarzane lokalnie i nigdy nie opuszczają Twojego urządzenia.',
+    acceptAll: 'Zaakceptuj wszystkie',
+    rejectAll: 'Odrzuć wszystkie',
+    learnMore: 'Dowiedz się więcej',
+  },
+  tr: {
+    title: 'Gizliliğinize değer veriyoruz',
+    description: 'Trafiğimizi analiz etmek ve size ilgili reklamlar göstermek için çerezler kullanıyoruz. Dosyalarınız yerel olarak işlenir ve cihazınızdan asla ayrılmaz.',
+    acceptAll: 'Tümünü kabul et',
+    rejectAll: 'Tümünü reddet',
+    learnMore: 'Daha fazla bilgi',
+  },
+  id: {
+    title: 'Kami menghargai privasi Anda',
+    description: 'Kami menggunakan cookie untuk menganalisis lalu lintas kami dan menampilkan iklan yang relevan. File Anda diproses secara lokal dan tidak pernah meninggalkan perangkat Anda.',
+    acceptAll: 'Terima Semua',
+    rejectAll: 'Tolak Semua',
+    learnMore: 'Pelajari lebih lanjut',
   },
 };
 

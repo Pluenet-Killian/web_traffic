@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Convertitore di formati dati online gratuito. Converti JSON, CSV, XML, YAML, SQL, Markdown e HTML istantaneamente.",
+    "titleTemplate": "Converti {source} in {target} - Strumento Gratuito e Sicuro",
+    "descriptionTemplate": "Converti i tuoi file {source} in {target} istantaneamente. Strumento 100% gratuito, elaborazione lato client, nessun dato inviato al server. Veloce e sicuro."
+  },
+  "common": {
+    "home": "Home",
+    "allConverters": "Tutti i Convertitori",
+    "popularConversions": "Conversioni Popolari",
+    "relatedConversions": "Conversioni Correlate",
+    "supportedFormats": "Formati Supportati",
+    "learnMore": "Scopri di più",
+    "backToHome": "Torna alla Home",
+    "previousPage": "Pagina Precedente",
+    "pageNotFound": "Pagina Non Trovata",
+    "pageNotFoundDesc": "Questa conversione non esiste o l'URL non è corretto."
+  },
+  "converter": {
+    "input": "Input",
+    "output": "Output",
+    "convert": "Converti",
+    "converting": "Conversione...",
+    "copy": "Copia",
+    "copied": "Copiato!",
+    "download": "Scarica",
+    "clear": "Cancella",
+    "loadExample": "Carica Esempio",
+    "importFile": "Importa File",
+    "pasteHere": "Incolla il tuo {format} qui...",
+    "resultHere": "Il risultato {format} apparirà qui...",
+    "conversionError": "Errore di Conversione",
+    "securityNotice": "Elaborazione 100% locale - I tuoi dati non lasciano mai il browser",
+    "conversionSuccess": "Conversione riuscita",
+    "rows": "righe",
+    "copiedToClipboard": "Copiato negli appunti",
+    "downloadStarted": "Download avviato",
+    "fileLoaded": "File caricato",
+    "fileReadError": "Errore nella lettura del file",
+    "dropFile": "Rilascia il file qui",
+    "dragDropHint": "Trascina un file o incolla i tuoi dati",
+    "exampleLoaded": "Dati di esempio caricati"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Gratuito e Sicuro",
+    "heroDescription": "Trasforma i tuoi file JSON, CSV, XML, YAML, SQL, Markdown e HTML istantaneamente. 100% lato client - I tuoi dati rimangono privati.",
+    "possibleConversions": "Conversioni Possibili",
+    "instantProcessing": "Elaborazione Istantanea",
+    "privacyFirst": "Privacy First",
+    "chooseConversion": "Scegli la Tua Conversione",
+    "chooseConversionDesc": "Clicca su una conversione per accedere allo strumento dedicato. Tutte le trasformazioni vengono eseguite localmente nel tuo browser.",
+    "whyUseUs": "Perché Usare il Nostro Convertitore?",
+    "feature1Title": "100% Sicuro",
+    "feature1Desc": "I tuoi dati non lasciano mai il browser. Nessun upload sui nostri server, elaborazione completamente locale.",
+    "feature2Title": "Ultra Veloce",
+    "feature2Desc": "Conversione istantanea grazie all'elaborazione lato client. Nessuna attesa, nessuna coda.",
+    "feature3Title": "Gratuito e Illimitato",
+    "feature3Desc": "Nessun limite di file, nessun account richiesto. Converti quanto vuoi, gratis.",
+    "allConversions": "Tutte le Conversioni Disponibili"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Formato leggero per lo scambio dati"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Formato tabulare semplice"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Formato markup strutturato"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Formato di configurazione leggibile"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - Istruzioni INSERT per database"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Linguaggio di markup leggero per testo formattato"
+    },
+    "html": {
+      "label": "Tabella HTML",
+      "description": "Markup tabella HTML per visualizzazione web"
+    }
+  },
+  "faq": {
+    "q1": "Perché convertire {source} in {target}?",
+    "a1": "Convertire {source} in {target} è utile quando devi integrare dati in un sistema che accetta solo il formato {target}. {sourceDesc} può essere trasformato in {target} ({targetDesc}) per una migliore compatibilità.",
+    "q2": "I miei dati sono sicuri durante la conversione?",
+    "a2": "Assolutamente. Il nostro convertitore funziona al 100% lato client (nel tuo browser). I tuoi dati {source} non vengono mai inviati a un server esterno. L'elaborazione è istantanea e completamente privata.",
+    "q3": "Qual è la dimensione massima del file {source} supportata?",
+    "a3": "Poiché l'elaborazione avviene nel tuo browser, il limite dipende dalla memoria disponibile. Generalmente, file fino a 10 MB vengono elaborati senza problemi. Per file più grandi, consigliamo di dividerli.",
+    "q4": "Come funziona la conversione da {source} a {target}?",
+    "a4": "Il nostro strumento analizza il tuo file {source}, esamina la struttura dei dati, poi genera l'equivalente in formato {target}. Array, oggetti e valori primitivi vengono mappati intelligentemente alla sintassi {target}.",
+    "q5": "Posso convertire {target} in {source}?",
+    "a5": "Sì! Supportiamo la conversione bidirezionale. Usa il nostro convertitore da {target} a {source} per l'operazione inversa."
+  },
+  "seo": {
+    "h1Template": "Convertitore da {source} a {target}",
+    "introTemplate": "Trasforma facilmente i tuoi dati {source} ({sourceDesc}) in formato {target} ({targetDesc}). Il nostro strumento funziona interamente nel tuo browser per garantire la privacy dei tuoi dati.",
+    "reverseConversion": "Hai bisogno della conversione inversa?",
+    "convertReverse": "Converti {target} → {source}",
+    "useCasesTitle": "Casi d'Uso Comuni",
+    "benefitsTitle": "Vantaggi",
+    "technicalNoteTitle": "Dettagli Tecnici"
+  },
+  "footer": {
+    "aboutText": "Converti i tuoi dati tra JSON, CSV, XML, YAML, SQL, Markdown e HTML gratuitamente. Il nostro strumento funziona interamente nel tuo browser per garantire la privacy dei tuoi dati.",
+    "info": "Informazioni",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Termini di Servizio",
+    "contact": "Contatto",
+    "copyright": "Tutti i diritti riservati.",
+    "securityNote": "Elaborazione 100% lato client - I tuoi dati non lasciano mai il browser."
+  }
+}

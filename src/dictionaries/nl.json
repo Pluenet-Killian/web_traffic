@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Gratis online gegevensformaat converter. Converteer JSON, CSV, XML, YAML, SQL, Markdown en HTML direct.",
+    "titleTemplate": "Converteer {source} naar {target} - Gratis & Veilige Tool",
+    "descriptionTemplate": "Converteer je {source} bestanden naar {target} direct. 100% gratis tool, verwerking aan clientzijde, geen gegevens naar server verzonden. Snel en veilig."
+  },
+  "common": {
+    "home": "Home",
+    "allConverters": "Alle Converters",
+    "popularConversions": "Populaire Conversies",
+    "relatedConversions": "Gerelateerde Conversies",
+    "supportedFormats": "Ondersteunde Formaten",
+    "learnMore": "Meer info",
+    "backToHome": "Terug naar Home",
+    "previousPage": "Vorige Pagina",
+    "pageNotFound": "Pagina Niet Gevonden",
+    "pageNotFoundDesc": "Deze conversie bestaat niet of de URL is onjuist."
+  },
+  "converter": {
+    "input": "Invoer",
+    "output": "Uitvoer",
+    "convert": "Converteer",
+    "converting": "Converteren...",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd!",
+    "download": "Downloaden",
+    "clear": "Wissen",
+    "loadExample": "Voorbeeld Laden",
+    "importFile": "Bestand Importeren",
+    "pasteHere": "Plak je {format} hier...",
+    "resultHere": "Het {format} resultaat verschijnt hier...",
+    "conversionError": "Conversiefout",
+    "securityNotice": "100% lokale verwerking - Je gegevens verlaten nooit je browser",
+    "conversionSuccess": "Conversie geslaagd",
+    "rows": "rijen",
+    "copiedToClipboard": "Gekopieerd naar klembord",
+    "downloadStarted": "Download gestart",
+    "fileLoaded": "Bestand geladen",
+    "fileReadError": "Fout bij lezen bestand",
+    "dropFile": "Zet je bestand hier neer",
+    "dragDropHint": "Sleep een bestand of plak je gegevens",
+    "exampleLoaded": "Voorbeeldgegevens geladen"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Gratis & Veilig",
+    "heroDescription": "Transformeer je JSON, CSV, XML, YAML, SQL, Markdown en HTML bestanden direct. 100% clientzijde - Je gegevens blijven privé.",
+    "possibleConversions": "Mogelijke Conversies",
+    "instantProcessing": "Directe Verwerking",
+    "privacyFirst": "Privacy Eerst",
+    "chooseConversion": "Kies Je Conversie",
+    "chooseConversionDesc": "Klik op een conversie om de speciale tool te openen. Alle transformaties worden lokaal in je browser uitgevoerd.",
+    "whyUseUs": "Waarom Onze Converter Gebruiken?",
+    "feature1Title": "100% Veilig",
+    "feature1Desc": "Je gegevens verlaten nooit je browser. Geen uploads naar onze servers, volledig lokale verwerking.",
+    "feature2Title": "Ultra Snel",
+    "feature2Desc": "Directe conversie dankzij verwerking aan clientzijde. Geen wachten, geen wachtrij.",
+    "feature3Title": "Gratis & Onbeperkt",
+    "feature3Desc": "Geen bestandslimieten, geen account nodig. Converteer zoveel je wilt, gratis.",
+    "allConversions": "Alle Beschikbare Conversies"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Lichtgewicht gegevensuitwisselingsformaat"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Eenvoudig tabelformaat"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Gestructureerd opmaakformaat"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Leesbaar configuratieformaat"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - INSERT statements voor databases"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Lichtgewicht opmaaktaal voor geformatteerde tekst"
+    },
+    "html": {
+      "label": "HTML Tabel",
+      "description": "HTML tabel opmaak voor webweergave"
+    }
+  },
+  "faq": {
+    "q1": "Waarom {source} naar {target} converteren?",
+    "a1": "Het converteren van {source} naar {target} is handig wanneer je gegevens moet integreren in een systeem dat alleen {target} formaat accepteert. {sourceDesc} kan worden getransformeerd naar {target} ({targetDesc}) voor betere compatibiliteit.",
+    "q2": "Zijn mijn gegevens veilig tijdens de conversie?",
+    "a2": "Absoluut. Onze converter werkt 100% aan clientzijde (in je browser). Je {source} gegevens worden nooit naar een externe server gestuurd. Verwerking is direct en volledig privé.",
+    "q3": "Wat is de maximale {source} bestandsgrootte?",
+    "a3": "Aangezien de verwerking in je browser plaatsvindt, hangt de limiet af van beschikbaar geheugen. Over het algemeen worden bestanden tot 10 MB probleemloos verwerkt. Voor grotere bestanden raden we aan om ze te splitsen.",
+    "q4": "Hoe werkt de {source} naar {target} conversie?",
+    "a4": "Onze tool parseert je {source} bestand, analyseert de gegevensstructuur en genereert vervolgens het equivalent in {target} formaat. Arrays, objecten en primitieve waarden worden intelligent gemapt naar {target} syntax.",
+    "q5": "Kan ik {target} naar {source} converteren?",
+    "a5": "Ja! We ondersteunen bidirectionele conversie. Gebruik onze {target} naar {source} converter voor de omgekeerde bewerking."
+  },
+  "seo": {
+    "h1Template": "{source} naar {target} Converter",
+    "introTemplate": "Transformeer eenvoudig je {source} gegevens ({sourceDesc}) naar {target} formaat ({targetDesc}). Onze tool werkt volledig in je browser om je gegevensprivacy te garanderen.",
+    "reverseConversion": "Omgekeerde conversie nodig?",
+    "convertReverse": "Converteer {target} → {source}",
+    "useCasesTitle": "Veelvoorkomende Toepassingen",
+    "benefitsTitle": "Voordelen",
+    "technicalNoteTitle": "Technische Details"
+  },
+  "footer": {
+    "aboutText": "Converteer je gegevens tussen JSON, CSV, XML, YAML, SQL, Markdown en HTML gratis. Onze tool werkt volledig in je browser om je gegevensprivacy te garanderen.",
+    "info": "Informatie",
+    "privacyPolicy": "Privacybeleid",
+    "termsOfService": "Servicevoorwaarden",
+    "contact": "Contact",
+    "copyright": "Alle rechten voorbehouden.",
+    "securityNote": "100% clientzijde verwerking - Je gegevens verlaten nooit je browser."
+  }
+}

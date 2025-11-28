@@ -17,7 +17,8 @@ export interface ConversionContent {
   };
 }
 
-type ContentMatrix = Record<string, Record<Locale, ConversionContent>>;
+// Use Partial to allow missing locales - fallback templates will be used
+type ContentMatrix = Record<string, Partial<Record<Locale, ConversionContent>>>;
 
 // ============================================
 // CONTENT FOR MAJOR CONVERSION PAIRS
@@ -849,6 +850,186 @@ const FALLBACK_TEMPLATES: Record<Locale, ConversionContent> = {
     faq: {
       question: 'Meus dados estão seguros?',
       answer: 'Absolutamente. Toda a conversão acontece localmente no seu navegador.',
+    },
+  },
+  it: {
+    intro: 'Converti i tuoi dati {source} in formato {target} in modo rapido e sicuro. Il nostro convertitore elabora tutto localmente nel tuo browser.',
+    useCases: [
+      'Migrazione di formato dati tra sistemi',
+      'Standardizzazione dei formati di file',
+      'Scambio dati multipiattaforma',
+      'Workflow di sviluppo e test',
+    ],
+    benefits: [
+      'Elaborazione 100% lato client',
+      'Nessun limite di dimensione',
+      'Conversione istantanea',
+      'Gratuito e illimitato',
+    ],
+    technicalNote: 'Questo convertitore utilizza librerie JavaScript moderne per analizzare {source} e generare {target} valido.',
+    faq: {
+      question: 'I miei dati sono al sicuro?',
+      answer: 'Assolutamente. Tutta la conversione avviene localmente nel tuo browser.',
+    },
+  },
+  nl: {
+    intro: 'Converteer je {source} gegevens snel en veilig naar {target} formaat. Onze converter verwerkt alles lokaal in je browser.',
+    useCases: [
+      'Dataformaat migratie tussen systemen',
+      'Standaardisatie van bestandsformaten',
+      'Cross-platform gegevensuitwisseling',
+      'Ontwikkelings- en testworkflows',
+    ],
+    benefits: [
+      '100% clientzijde verwerking',
+      'Geen bestandslimieten',
+      'Directe conversie',
+      'Gratis en onbeperkt',
+    ],
+    technicalNote: 'Deze converter gebruikt moderne JavaScript bibliotheken om {source} te parseren en geldige {target} te genereren.',
+    faq: {
+      question: 'Zijn mijn gegevens veilig?',
+      answer: 'Absoluut. Alle conversie gebeurt lokaal in je browser.',
+    },
+  },
+  sv: {
+    intro: 'Konvertera din {source} data till {target} format snabbt och säkert. Vår konverterare bearbetar allt lokalt i din webbläsare.',
+    useCases: [
+      'Dataformatmigrering mellan system',
+      'Standardisering av filformat',
+      'Plattformsoberoende datautbyte',
+      'Utvecklings- och testarbetsflöden',
+    ],
+    benefits: [
+      '100% klientsidebearbetning',
+      'Inga filstorleksgränser',
+      'Omedelbar konvertering',
+      'Gratis och obegränsad',
+    ],
+    technicalNote: 'Denna konverterare använder moderna JavaScript-bibliotek för att parsa {source} och generera giltig {target}.',
+    faq: {
+      question: 'Är mina data säkra?',
+      answer: 'Absolut. All konvertering sker lokalt i din webbläsare.',
+    },
+  },
+  da: {
+    intro: 'Konverter dine {source} data til {target} format hurtigt og sikkert. Vores konverter behandler alt lokalt i din browser.',
+    useCases: [
+      'Dataformat migrering mellem systemer',
+      'Standardisering af filformater',
+      'Dataudveksling på tværs af platforme',
+      'Udviklings- og testworkflows',
+    ],
+    benefits: [
+      '100% klient-side behandling',
+      'Ingen filstørrelsesbegrænsninger',
+      'Øjeblikkelig konvertering',
+      'Gratis og ubegrænset',
+    ],
+    technicalNote: 'Denne konverter bruger moderne JavaScript-biblioteker til at parse {source} og generere gyldig {target}.',
+    faq: {
+      question: 'Er mine data sikre?',
+      answer: 'Absolut. Al konvertering sker lokalt i din browser.',
+    },
+  },
+  no: {
+    intro: 'Konverter {source} dataene dine til {target} format raskt og sikkert. Vår konverterer behandler alt lokalt i nettleseren din.',
+    useCases: [
+      'Dataformat migrering mellom systemer',
+      'Standardisering av filformater',
+      'Datautveksling på tvers av plattformer',
+      'Utviklings- og testarbeidsflyter',
+    ],
+    benefits: [
+      '100% klientside prosessering',
+      'Ingen filstørrelsesgrenser',
+      'Umiddelbar konvertering',
+      'Gratis og ubegrenset',
+    ],
+    technicalNote: 'Denne konvertereren bruker moderne JavaScript-biblioteker for å parse {source} og generere gyldig {target}.',
+    faq: {
+      question: 'Er dataene mine trygge?',
+      answer: 'Absolutt. All konvertering skjer lokalt i nettleseren din.',
+    },
+  },
+  fi: {
+    intro: 'Muunna {source} tietosi {target} muotoon nopeasti ja turvallisesti. Muuntajamme käsittelee kaiken paikallisesti selaimessasi.',
+    useCases: [
+      'Tietomuodon siirto järjestelmien välillä',
+      'Tiedostomuotojen standardointi',
+      'Alustojen välinen tiedonvaihto',
+      'Kehitys- ja testaustyönkulut',
+    ],
+    benefits: [
+      '100% asiakaspuolen käsittely',
+      'Ei tiedostokokorajoituksia',
+      'Välitön muunnos',
+      'Ilmainen ja rajoittamaton',
+    ],
+    technicalNote: 'Tämä muunnin käyttää moderneja JavaScript-kirjastoja {source} jäsentämiseen ja kelvollisen {target} luomiseen.',
+    faq: {
+      question: 'Ovatko tietoni turvassa?',
+      answer: 'Ehdottomasti. Kaikki muunnos tapahtuu paikallisesti selaimessasi.',
+    },
+  },
+  pl: {
+    intro: 'Konwertuj dane {source} do formatu {target} szybko i bezpiecznie. Nasz konwerter przetwarza wszystko lokalnie w przeglądarce.',
+    useCases: [
+      'Migracja formatu danych między systemami',
+      'Standaryzacja formatów plików',
+      'Wymiana danych między platformami',
+      'Przepływy pracy programistycznej i testowej',
+    ],
+    benefits: [
+      '100% przetwarzanie po stronie klienta',
+      'Brak limitów rozmiaru pliku',
+      'Natychmiastowa konwersja',
+      'Darmowe i nieograniczone',
+    ],
+    technicalNote: 'Ten konwerter używa nowoczesnych bibliotek JavaScript do parsowania {source} i generowania prawidłowego {target}.',
+    faq: {
+      question: 'Czy moje dane są bezpieczne?',
+      answer: 'Absolutnie. Cała konwersja odbywa się lokalnie w przeglądarce.',
+    },
+  },
+  tr: {
+    intro: '{source} verilerinizi hızlı ve güvenli bir şekilde {target} formatına dönüştürün. Dönüştürücümüz her şeyi tarayıcınızda yerel olarak işler.',
+    useCases: [
+      'Sistemler arası veri formatı geçişi',
+      'Dosya formatı standardizasyonu',
+      'Platformlar arası veri değişimi',
+      'Geliştirme ve test iş akışları',
+    ],
+    benefits: [
+      '%100 istemci tarafı işleme',
+      'Dosya boyutu limiti yok',
+      'Anında dönüştürme',
+      'Ücretsiz ve sınırsız',
+    ],
+    technicalNote: 'Bu dönüştürücü, {source} ayrıştırmak ve geçerli {target} oluşturmak için modern JavaScript kütüphaneleri kullanır.',
+    faq: {
+      question: 'Verilerim güvende mi?',
+      answer: 'Kesinlikle. Tüm dönüştürme tarayıcınızda yerel olarak gerçekleşir.',
+    },
+  },
+  id: {
+    intro: 'Konversi data {source} Anda ke format {target} dengan cepat dan aman. Konverter kami memproses semuanya secara lokal di browser Anda.',
+    useCases: [
+      'Migrasi format data antar sistem',
+      'Standardisasi format file',
+      'Pertukaran data lintas platform',
+      'Alur kerja pengembangan dan pengujian',
+    ],
+    benefits: [
+      '100% pemrosesan sisi klien',
+      'Tidak ada batasan ukuran file',
+      'Konversi instan',
+      'Gratis dan tidak terbatas',
+    ],
+    technicalNote: 'Konverter ini menggunakan library JavaScript modern untuk mem-parse {source} dan menghasilkan {target} yang valid.',
+    faq: {
+      question: 'Apakah data saya aman?',
+      answer: 'Tentu saja. Semua konversi terjadi secara lokal di browser Anda.',
     },
   },
 };

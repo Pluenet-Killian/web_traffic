@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Konverter format data online gratis. Konversi JSON, CSV, XML, YAML, SQL, Markdown dan HTML secara instan.",
+    "titleTemplate": "Konversi {source} ke {target} - Alat Gratis & Aman",
+    "descriptionTemplate": "Konversi file {source} Anda ke {target} secara instan. 100% gratis, pemrosesan sisi klien, tidak ada data yang dikirim ke server. Cepat dan aman."
+  },
+  "common": {
+    "home": "Beranda",
+    "allConverters": "Semua Konverter",
+    "popularConversions": "Konversi Populer",
+    "relatedConversions": "Konversi Terkait",
+    "supportedFormats": "Format yang Didukung",
+    "learnMore": "Pelajari lebih lanjut",
+    "backToHome": "Kembali ke Beranda",
+    "previousPage": "Halaman Sebelumnya",
+    "pageNotFound": "Halaman Tidak Ditemukan",
+    "pageNotFoundDesc": "Konversi ini tidak ada atau URL salah."
+  },
+  "converter": {
+    "input": "Input",
+    "output": "Output",
+    "convert": "Konversi",
+    "converting": "Mengkonversi...",
+    "copy": "Salin",
+    "copied": "Disalin!",
+    "download": "Unduh",
+    "clear": "Hapus",
+    "loadExample": "Muat Contoh",
+    "importFile": "Impor File",
+    "pasteHere": "Tempel {format} Anda di sini...",
+    "resultHere": "Hasil {format} akan muncul di sini...",
+    "conversionError": "Error Konversi",
+    "securityNotice": "100% pemrosesan lokal - Data Anda tidak pernah meninggalkan browser",
+    "conversionSuccess": "Konversi berhasil",
+    "rows": "baris",
+    "copiedToClipboard": "Disalin ke clipboard",
+    "downloadStarted": "Unduhan dimulai",
+    "fileLoaded": "File dimuat",
+    "fileReadError": "Error membaca file",
+    "dropFile": "Letakkan file Anda di sini",
+    "dragDropHint": "Seret dan letakkan file atau tempel data Anda",
+    "exampleLoaded": "Data contoh dimuat"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Gratis & Aman",
+    "heroDescription": "Transformasi file JSON, CSV, XML, YAML, SQL, Markdown dan HTML Anda secara instan. 100% sisi klien - Data Anda tetap privat.",
+    "possibleConversions": "Konversi yang Tersedia",
+    "instantProcessing": "Pemrosesan Instan",
+    "privacyFirst": "Privasi Utama",
+    "chooseConversion": "Pilih Konversi Anda",
+    "chooseConversionDesc": "Klik konversi untuk mengakses alat khusus. Semua transformasi dilakukan secara lokal di browser Anda.",
+    "whyUseUs": "Mengapa Menggunakan Konverter Kami?",
+    "feature1Title": "100% Aman",
+    "feature1Desc": "Data Anda tidak pernah meninggalkan browser. Tidak ada unggahan ke server kami, pemrosesan sepenuhnya lokal.",
+    "feature2Title": "Sangat Cepat",
+    "feature2Desc": "Konversi instan berkat pemrosesan sisi klien. Tidak ada penantian, tidak ada antrian.",
+    "feature3Title": "Gratis & Tidak Terbatas",
+    "feature3Desc": "Tidak ada batasan file, tidak perlu akun. Konversi sebanyak yang Anda mau, gratis.",
+    "allConversions": "Semua Konversi yang Tersedia"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Format pertukaran data ringan"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Format tabel sederhana"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Format markup terstruktur"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Format konfigurasi yang mudah dibaca"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - Pernyataan INSERT untuk database"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Bahasa markup ringan untuk teks terformat"
+    },
+    "html": {
+      "label": "Tabel HTML",
+      "description": "Markup tabel HTML untuk tampilan web"
+    }
+  },
+  "faq": {
+    "q1": "Mengapa mengkonversi {source} ke {target}?",
+    "a1": "Mengkonversi {source} ke {target} berguna ketika Anda perlu mengintegrasikan data ke sistem yang hanya menerima format {target}. {sourceDesc} dapat ditransformasi ke {target} ({targetDesc}) untuk kompatibilitas yang lebih baik.",
+    "q2": "Apakah data saya aman selama konversi?",
+    "a2": "Tentu saja. Konverter kami bekerja 100% di sisi klien (di browser Anda). Data {source} Anda tidak pernah dikirim ke server eksternal. Pemrosesan instan dan sepenuhnya privat.",
+    "q3": "Berapa ukuran file {source} maksimum yang didukung?",
+    "a3": "Karena pemrosesan terjadi di browser Anda, batasnya tergantung pada memori yang tersedia. Umumnya, file hingga 10 MB diproses tanpa masalah. Untuk file yang lebih besar, kami sarankan untuk membaginya.",
+    "q4": "Bagaimana konversi {source} ke {target} bekerja?",
+    "a4": "Alat kami mem-parse file {source} Anda, menganalisis struktur data, kemudian menghasilkan padanannya dalam format {target}. Array, objek, dan nilai primitif dipetakan secara cerdas ke sintaks {target}.",
+    "q5": "Bisakah saya mengkonversi {target} ke {source}?",
+    "a5": "Ya! Kami mendukung konversi dua arah. Gunakan konverter {target} ke {source} kami untuk operasi sebaliknya."
+  },
+  "seo": {
+    "h1Template": "Konverter {source} ke {target}",
+    "introTemplate": "Transformasi data {source} Anda ({sourceDesc}) ke format {target} ({targetDesc}) dengan mudah. Alat kami bekerja sepenuhnya di browser Anda untuk menjamin privasi data Anda.",
+    "reverseConversion": "Butuh konversi sebaliknya?",
+    "convertReverse": "Konversi {target} → {source}",
+    "useCasesTitle": "Kasus Penggunaan Umum",
+    "benefitsTitle": "Manfaat",
+    "technicalNoteTitle": "Detail Teknis"
+  },
+  "footer": {
+    "aboutText": "Konversi data Anda antara JSON, CSV, XML, YAML, SQL, Markdown dan HTML secara gratis. Alat kami bekerja sepenuhnya di browser Anda untuk menjamin privasi data Anda.",
+    "info": "Informasi",
+    "privacyPolicy": "Kebijakan Privasi",
+    "termsOfService": "Ketentuan Layanan",
+    "contact": "Kontak",
+    "copyright": "Hak cipta dilindungi.",
+    "securityNote": "100% pemrosesan sisi klien - Data Anda tidak pernah meninggalkan browser."
+  }
+}

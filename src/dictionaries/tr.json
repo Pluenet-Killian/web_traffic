@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Ücretsiz çevrimiçi veri formatı dönüştürücü. JSON, CSV, XML, YAML, SQL, Markdown ve HTML'i anında dönüştürün.",
+    "titleTemplate": "{source}'dan {target}'a Dönüştür - Ücretsiz & Güvenli Araç",
+    "descriptionTemplate": "{source} dosyalarınızı anında {target}'a dönüştürün. %100 ücretsiz araç, istemci tarafı işleme, sunucuya veri gönderilmez. Hızlı ve güvenli."
+  },
+  "common": {
+    "home": "Ana Sayfa",
+    "allConverters": "Tüm Dönüştürücüler",
+    "popularConversions": "Popüler Dönüşümler",
+    "relatedConversions": "İlgili Dönüşümler",
+    "supportedFormats": "Desteklenen Formatlar",
+    "learnMore": "Daha fazla bilgi",
+    "backToHome": "Ana Sayfaya Dön",
+    "previousPage": "Önceki Sayfa",
+    "pageNotFound": "Sayfa Bulunamadı",
+    "pageNotFoundDesc": "Bu dönüşüm mevcut değil veya URL hatalı."
+  },
+  "converter": {
+    "input": "Girdi",
+    "output": "Çıktı",
+    "convert": "Dönüştür",
+    "converting": "Dönüştürülüyor...",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı!",
+    "download": "İndir",
+    "clear": "Temizle",
+    "loadExample": "Örnek Yükle",
+    "importFile": "Dosya İçe Aktar",
+    "pasteHere": "{format} verilerinizi buraya yapıştırın...",
+    "resultHere": "{format} sonucu burada görünecek...",
+    "conversionError": "Dönüşüm Hatası",
+    "securityNotice": "%100 yerel işleme - Verileriniz tarayıcınızdan asla ayrılmaz",
+    "conversionSuccess": "Dönüşüm başarılı",
+    "rows": "satır",
+    "copiedToClipboard": "Panoya kopyalandı",
+    "downloadStarted": "İndirme başladı",
+    "fileLoaded": "Dosya yüklendi",
+    "fileReadError": "Dosya okuma hatası",
+    "dropFile": "Dosyanızı buraya bırakın",
+    "dragDropHint": "Bir dosya sürükleyip bırakın veya verilerinizi yapıştırın",
+    "exampleLoaded": "Örnek veri yüklendi"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Ücretsiz & Güvenli",
+    "heroDescription": "JSON, CSV, XML, YAML, SQL, Markdown ve HTML dosyalarınızı anında dönüştürün. %100 istemci tarafı - Verileriniz gizli kalır.",
+    "possibleConversions": "Olası Dönüşümler",
+    "instantProcessing": "Anlık İşleme",
+    "privacyFirst": "Önce Gizlilik",
+    "chooseConversion": "Dönüşümünüzü Seçin",
+    "chooseConversionDesc": "Özel araca erişmek için bir dönüşüme tıklayın. Tüm dönüşümler tarayıcınızda yerel olarak gerçekleştirilir.",
+    "whyUseUs": "Neden Dönüştürücümüzü Kullanmalısınız?",
+    "feature1Title": "%100 Güvenli",
+    "feature1Desc": "Verileriniz tarayıcınızdan asla ayrılmaz. Sunucularımıza yükleme yok, tamamen yerel işleme.",
+    "feature2Title": "Ultra Hızlı",
+    "feature2Desc": "İstemci tarafı işleme sayesinde anlık dönüşüm. Bekleme yok, sıra yok.",
+    "feature3Title": "Ücretsiz & Sınırsız",
+    "feature3Desc": "Dosya limiti yok, hesap gerekmez. İstediğiniz kadar dönüştürün, ücretsiz.",
+    "allConversions": "Tüm Mevcut Dönüşümler"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Hafif veri değişim formatı"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Basit tablo formatı"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Yapılandırılmış işaretleme formatı"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Okunabilir yapılandırma formatı"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - Veritabanları için INSERT ifadeleri"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Biçimlendirilmiş metin için hafif işaretleme dili"
+    },
+    "html": {
+      "label": "HTML Tablo",
+      "description": "Web görüntüleme için HTML tablo işaretlemesi"
+    }
+  },
+  "faq": {
+    "q1": "Neden {source}'dan {target}'a dönüştürmeliyim?",
+    "a1": "{source}'dan {target}'a dönüştürme, yalnızca {target} formatını kabul eden bir sisteme veri entegre etmeniz gerektiğinde yararlıdır. {sourceDesc} daha iyi uyumluluk için {target}'a ({targetDesc}) dönüştürülebilir.",
+    "q2": "Dönüşüm sırasında verilerim güvende mi?",
+    "a2": "Kesinlikle. Dönüştürücümüz %100 istemci tarafında (tarayıcınızda) çalışır. {source} verileriniz asla harici bir sunucuya gönderilmez. İşleme anlık ve tamamen gizlidir.",
+    "q3": "Desteklenen maksimum {source} dosya boyutu nedir?",
+    "a3": "İşleme tarayıcınızda gerçekleştiğinden, sınır mevcut belleğe bağlıdır. Genellikle 10 MB'a kadar dosyalar sorunsuz işlenir. Daha büyük dosyalar için bölmenizi öneririz.",
+    "q4": "{source}'dan {target}'a dönüşüm nasıl çalışır?",
+    "a4": "Aracımız {source} dosyanızı ayrıştırır, veri yapısını analiz eder, ardından {target} formatında eşdeğerini oluşturur. Diziler, nesneler ve ilkel değerler {target} sözdizimine akıllıca eşlenir.",
+    "q5": "{target}'dan {source}'a dönüştürebilir miyim?",
+    "a5": "Evet! Çift yönlü dönüşümü destekliyoruz. Ters işlem için {target}'dan {source}'a dönüştürücümüzü kullanın."
+  },
+  "seo": {
+    "h1Template": "{source}'dan {target}'a Dönüştürücü",
+    "introTemplate": "{source} verilerinizi ({sourceDesc}) kolayca {target} formatına ({targetDesc}) dönüştürün. Aracımız veri gizliliğinizi garanti etmek için tamamen tarayıcınızda çalışır.",
+    "reverseConversion": "Ters dönüşüme mi ihtiyacınız var?",
+    "convertReverse": "{target} → {source} Dönüştür",
+    "useCasesTitle": "Yaygın Kullanım Durumları",
+    "benefitsTitle": "Avantajlar",
+    "technicalNoteTitle": "Teknik Detaylar"
+  },
+  "footer": {
+    "aboutText": "Verilerinizi JSON, CSV, XML, YAML, SQL, Markdown ve HTML arasında ücretsiz dönüştürün. Aracımız veri gizliliğinizi garanti etmek için tamamen tarayıcınızda çalışır.",
+    "info": "Bilgi",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Kullanım Şartları",
+    "contact": "İletişim",
+    "copyright": "Tüm hakları saklıdır.",
+    "securityNote": "%100 istemci tarafı işleme - Verileriniz tarayıcınızdan asla ayrılmaz."
+  }
+}

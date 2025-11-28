@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "siteName": "Data Converter",
+    "siteDescription": "Gratis online dataformat konverterer. Konverter JSON, CSV, XML, YAML, SQL, Markdown og HTML umiddelbart.",
+    "titleTemplate": "Konverter {source} til {target} - Gratis & Sikkert Verktøy",
+    "descriptionTemplate": "Konverter dine {source} filer til {target} umiddelbart. 100% gratis verktøy, klientside prosessering, ingen data sendes til server. Raskt og sikkert."
+  },
+  "common": {
+    "home": "Hjem",
+    "allConverters": "Alle Konverterere",
+    "popularConversions": "Populære Konverteringer",
+    "relatedConversions": "Relaterte Konverteringer",
+    "supportedFormats": "Støttede Formater",
+    "learnMore": "Les mer",
+    "backToHome": "Tilbake til Hjem",
+    "previousPage": "Forrige Side",
+    "pageNotFound": "Side Ikke Funnet",
+    "pageNotFoundDesc": "Denne konverteringen finnes ikke eller URL-en er feil."
+  },
+  "converter": {
+    "input": "Input",
+    "output": "Output",
+    "convert": "Konverter",
+    "converting": "Konverterer...",
+    "copy": "Kopier",
+    "copied": "Kopiert!",
+    "download": "Last ned",
+    "clear": "Tøm",
+    "loadExample": "Last Eksempel",
+    "importFile": "Importer Fil",
+    "pasteHere": "Lim inn din {format} her...",
+    "resultHere": "{format} resultatet vises her...",
+    "conversionError": "Konverteringsfeil",
+    "securityNotice": "100% lokal prosessering - Dine data forlater aldri nettleseren din",
+    "conversionSuccess": "Konvertering vellykket",
+    "rows": "rader",
+    "copiedToClipboard": "Kopiert til utklippstavlen",
+    "downloadStarted": "Nedlasting startet",
+    "fileLoaded": "Fil lastet",
+    "fileReadError": "Feil ved lesing av fil",
+    "dropFile": "Slipp filen din her",
+    "dragDropHint": "Dra og slipp en fil eller lim inn dataene dine",
+    "exampleLoaded": "Eksempeldata lastet"
+  },
+  "home": {
+    "heroTitle": "Data Converter",
+    "heroSubtitle": "Gratis & Sikkert",
+    "heroDescription": "Transformer dine JSON, CSV, XML, YAML, SQL, Markdown og HTML filer umiddelbart. 100% klientside - Dine data forblir private.",
+    "possibleConversions": "Mulige Konverteringer",
+    "instantProcessing": "Umiddelbar Prosessering",
+    "privacyFirst": "Personvern Først",
+    "chooseConversion": "Velg Din Konvertering",
+    "chooseConversionDesc": "Klikk på en konvertering for å få tilgang til det dedikerte verktøyet. Alle transformasjoner utføres lokalt i nettleseren din.",
+    "whyUseUs": "Hvorfor Bruke Vår Konverterer?",
+    "feature1Title": "100% Sikkert",
+    "feature1Desc": "Dine data forlater aldri nettleseren din. Ingen opplasting til våre servere, helt lokal prosessering.",
+    "feature2Title": "Ultra Raskt",
+    "feature2Desc": "Umiddelbar konvertering takket være klientside prosessering. Ingen venting, ingen kø.",
+    "feature3Title": "Gratis & Ubegrenset",
+    "feature3Desc": "Ingen filbegrensninger, ingen konto nødvendig. Konverter så mye du vil, gratis.",
+    "allConversions": "Alle Tilgjengelige Konverteringer"
+  },
+  "formats": {
+    "json": {
+      "label": "JSON",
+      "description": "JavaScript Object Notation - Lettvekts datautvekslingsformat"
+    },
+    "csv": {
+      "label": "CSV",
+      "description": "Comma-Separated Values - Enkelt tabellformat"
+    },
+    "xml": {
+      "label": "XML",
+      "description": "eXtensible Markup Language - Strukturert markup format"
+    },
+    "yaml": {
+      "label": "YAML",
+      "description": "YAML Ain't Markup Language - Lesbart konfigurasjonsformat"
+    },
+    "sql": {
+      "label": "SQL",
+      "description": "Structured Query Language - INSERT statements for databaser"
+    },
+    "markdown": {
+      "label": "Markdown",
+      "description": "Lettvekts markup språk for formatert tekst"
+    },
+    "html": {
+      "label": "HTML Tabell",
+      "description": "HTML tabell markup for webvisning"
+    }
+  },
+  "faq": {
+    "q1": "Hvorfor konvertere {source} til {target}?",
+    "a1": "Konvertering av {source} til {target} er nyttig når du trenger å integrere data i et system som kun aksepterer {target} format. {sourceDesc} kan transformeres til {target} ({targetDesc}) for bedre kompatibilitet.",
+    "q2": "Er dataene mine sikre under konverteringen?",
+    "a2": "Absolutt. Vår konverterer arbeider 100% på klientsiden (i nettleseren din). Dine {source} data sendes aldri til en ekstern server. Prosesseringen er umiddelbar og helt privat.",
+    "q3": "Hva er maksimal {source} filstørrelse som støttes?",
+    "a3": "Siden prosesseringen skjer i nettleseren din, avhenger grensen av tilgjengelig minne. Generelt prosesseres filer opp til 10 MB uten problemer. For større filer anbefaler vi å dele dem opp.",
+    "q4": "Hvordan fungerer {source} til {target} konvertering?",
+    "a4": "Vårt verktøy parser din {source} fil, analyserer datastrukturen og genererer deretter ekvivalenten i {target} format. Arrays, objekter og primitive verdier mappes intelligent til {target} syntaks.",
+    "q5": "Kan jeg konvertere {target} til {source}?",
+    "a5": "Ja! Vi støtter toveis konvertering. Bruk vår {target} til {source} konverterer for den omvendte operasjonen."
+  },
+  "seo": {
+    "h1Template": "{source} til {target} Konverterer",
+    "introTemplate": "Transformer enkelt dine {source} data ({sourceDesc}) til {target} format ({targetDesc}). Vårt verktøy arbeider helt i nettleseren din for å garantere ditt personvern.",
+    "reverseConversion": "Trenger du den omvendte konverteringen?",
+    "convertReverse": "Konverter {target} → {source}",
+    "useCasesTitle": "Vanlige Brukstilfeller",
+    "benefitsTitle": "Fordeler",
+    "technicalNoteTitle": "Tekniske Detaljer"
+  },
+  "footer": {
+    "aboutText": "Konverter dataene dine mellom JSON, CSV, XML, YAML, SQL, Markdown og HTML gratis. Vårt verktøy arbeider helt i nettleseren din for å garantere ditt personvern.",
+    "info": "Informasjon",
+    "privacyPolicy": "Personvernerklæring",
+    "termsOfService": "Tjenestevilkår",
+    "contact": "Kontakt",
+    "copyright": "Alle rettigheter reservert.",
+    "securityNote": "100% klientside prosessering - Dine data forlater aldri nettleseren din."
+  }
+}

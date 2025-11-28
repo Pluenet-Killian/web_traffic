@@ -102,6 +102,15 @@ const dictionaries: Record<Locale, () => Promise<Dictionary>> = {
   es: () => import('./es.json').then((module) => module.default),
   de: () => import('./de.json').then((module) => module.default),
   pt: () => import('./pt.json').then((module) => module.default),
+  it: () => import('./it.json').then((module) => module.default),
+  nl: () => import('./nl.json').then((module) => module.default),
+  sv: () => import('./sv.json').then((module) => module.default),
+  da: () => import('./da.json').then((module) => module.default),
+  no: () => import('./no.json').then((module) => module.default),
+  fi: () => import('./fi.json').then((module) => module.default),
+  pl: () => import('./pl.json').then((module) => module.default),
+  tr: () => import('./tr.json').then((module) => module.default),
+  id: () => import('./id.json').then((module) => module.default),
 };
 
 export async function getDictionary(locale: Locale): Promise<Dictionary> {
