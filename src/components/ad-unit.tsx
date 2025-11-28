@@ -1,6 +1,6 @@
 // Contrôle global pour afficher/masquer les pubs
 // Mettre à true une fois l'approbation AdSense obtenue
-export const SHOW_ADS = process.env.NEXT_PUBLIC_SHOW_ADS === 'true';
+export const SHOW_ADS = false;
 
 interface AdUnitProps {
   position: 'header' | 'sidebar' | 'below-result' | 'inline' | 'modal';

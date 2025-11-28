@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { SHOW_ADS } from './ad-unit';
 
 interface AdStickyProps {
   position?: 'bottom' | 'left' | 'right';
@@ -12,6 +13,9 @@ export default function AdSticky({ position = 'bottom' }: AdStickyProps) {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
+    // Ne pas activer le scroll listener si les pubs sont désactivées
+    if (!SHOW_ADS) return;
+
     // Show after scroll
     const handleScroll = () => {
       if (window.scrollY > 300 && !isDismissed) {
@@ -23,7 +27,8 @@ export default function AdSticky({ position = 'bottom' }: AdStickyProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isDismissed]);
 
-  if (!isVisible || isDismissed) return null;
+  // Ne rien afficher si les pubs sont désactivées
+  if (!SHOW_ADS || !isVisible || isDismissed) return null;
 
   if (position === 'bottom') {
     return (

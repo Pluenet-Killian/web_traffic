@@ -1,11 +1,16 @@
 'use client';
 
+import { SHOW_ADS } from './ad-unit';
+
 interface AdNativeProps {
   title?: string;
   className?: string;
 }
 
 export default function AdNative({ title = 'Sponsored', className = '' }: AdNativeProps) {
+  // Ne rien afficher si les pubs sont désactivées
+  if (!SHOW_ADS) return null;
+
   return (
     <div className={`w-full ${className}`}>
       <div

@@ -1,10 +1,15 @@
 'use client';
 
+import { SHOW_ADS } from './ad-unit';
+
 interface AdBillboardProps {
   className?: string;
 }
 
 export default function AdBillboard({ className = '' }: AdBillboardProps) {
+  // Ne rien afficher si les pubs sont désactivées
+  if (!SHOW_ADS) return null;
+
   return (
     <div className={`w-full flex justify-center ${className}`}>
       <div
