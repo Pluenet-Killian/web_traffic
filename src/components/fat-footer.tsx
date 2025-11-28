@@ -50,6 +50,9 @@ const TOOLS = [
   { label: 'PDF Dark Mode', href: 'tools/pdf-dark-mode' },
   { label: 'PDF Flatten', href: 'tools/pdf-flatten' },
   { label: 'Image Watermark', href: 'tools/image-watermark' },
+  { label: 'Video to Audio', href: 'tools/video-to-audio' },
+  { label: 'Video Mute', href: 'tools/video-mute' },
+  { label: 'GIF Maker', href: 'tools/gif-maker' },
 ];
 
 // Guides
@@ -61,22 +64,31 @@ const GUIDES = [
   { label: 'Protect Photos', href: 'guides/how-to-protect-photos-online' },
 ];
 
-// Legal links (translated)
+// Wiki (File Format Glossary)
+const WIKI = [
+  { label: 'What is JSON?', href: 'wiki/json' },
+  { label: 'What is CSV?', href: 'wiki/csv' },
+  { label: 'What is PDF?', href: 'wiki/pdf' },
+  { label: 'What is XML?', href: 'wiki/xml' },
+  { label: 'What is MP4?', href: 'wiki/mp4' },
+];
+
+// Legal links (translated) - use descriptive text for SEO
 const LEGAL_LINKS: Record<string, { privacy: string; terms: string; cookies: string }> = {
   en: { privacy: 'Privacy Policy', terms: 'Terms of Service', cookies: 'Cookie Policy' },
-  fr: { privacy: 'Confidentialité', terms: 'CGU', cookies: 'Cookies' },
-  es: { privacy: 'Privacidad', terms: 'Términos', cookies: 'Cookies' },
-  de: { privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', cookies: 'Cookies' },
-  pt: { privacy: 'Privacidade', terms: 'Termos', cookies: 'Cookies' },
-  it: { privacy: 'Privacy', terms: 'Termini', cookies: 'Cookie' },
-  nl: { privacy: 'Privacy', terms: 'Voorwaarden', cookies: 'Cookies' },
-  sv: { privacy: 'Integritet', terms: 'Villkor', cookies: 'Cookies' },
-  da: { privacy: 'Privatliv', terms: 'Vilkår', cookies: 'Cookies' },
-  no: { privacy: 'Personvern', terms: 'Vilkår', cookies: 'Cookies' },
-  fi: { privacy: 'Tietosuoja', terms: 'Ehdot', cookies: 'Evästeet' },
-  pl: { privacy: 'Prywatność', terms: 'Regulamin', cookies: 'Cookies' },
-  tr: { privacy: 'Gizlilik', terms: 'Şartlar', cookies: 'Çerezler' },
-  id: { privacy: 'Privasi', terms: 'Ketentuan', cookies: 'Cookie' },
+  fr: { privacy: 'Politique de Confidentialité', terms: 'Conditions d\'Utilisation', cookies: 'Politique des Cookies' },
+  es: { privacy: 'Política de Privacidad', terms: 'Términos de Servicio', cookies: 'Política de Cookies' },
+  de: { privacy: 'Datenschutzrichtlinie', terms: 'Nutzungsbedingungen', cookies: 'Cookie-Richtlinie' },
+  pt: { privacy: 'Política de Privacidade', terms: 'Termos de Serviço', cookies: 'Política de Cookies' },
+  it: { privacy: 'Informativa Privacy', terms: 'Termini di Servizio', cookies: 'Informativa sui Cookie' },
+  nl: { privacy: 'Privacybeleid', terms: 'Gebruiksvoorwaarden', cookies: 'Cookiebeleid' },
+  sv: { privacy: 'Integritetspolicy', terms: 'Användarvillkor', cookies: 'Cookiepolicy' },
+  da: { privacy: 'Privatlivspolitik', terms: 'Servicevilkår', cookies: 'Cookiepolitik' },
+  no: { privacy: 'Personvernregler', terms: 'Tjenestevilkår', cookies: 'Retningslinjer for cookies' },
+  fi: { privacy: 'Tietosuojakäytäntö', terms: 'Käyttöehdot', cookies: 'Evästekäytäntö' },
+  pl: { privacy: 'Polityka Prywatności', terms: 'Warunki Korzystania', cookies: 'Polityka Cookies' },
+  tr: { privacy: 'Gizlilik Politikası', terms: 'Kullanım Şartları', cookies: 'Çerez Politikası' },
+  id: { privacy: 'Kebijakan Privasi', terms: 'Ketentuan Layanan', cookies: 'Kebijakan Cookie' },
 };
 
 export default function FatFooter({ lang, dict }: FatFooterProps) {
@@ -122,7 +134,7 @@ export default function FatFooter({ lang, dict }: FatFooterProps) {
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
           {/* Converter Groups */}
           {CONVERTER_GROUPS.map((group) => (
             <div key={group.title}>
@@ -188,6 +200,32 @@ export default function FatFooter({ lang, dict }: FatFooterProps) {
                   className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition-colors"
                 >
                   All Guides
+                  <ArrowUpRight className="w-3 h-3" />
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Wiki */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-4">File Formats</h4>
+            <ul className="space-y-2.5">
+              {WIKI.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={`/${lang}/${link.href}`}
+                    className="text-sm text-zinc-400 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href={`/${lang}/wiki`}
+                  className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition-colors"
+                >
+                  All Formats
                   <ArrowUpRight className="w-3 h-3" />
                 </Link>
               </li>

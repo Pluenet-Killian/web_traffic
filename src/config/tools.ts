@@ -3,7 +3,7 @@
 export interface Tool {
   id: string;
   slug: string;
-  category: 'pdf' | 'image';
+  category: 'pdf' | 'image' | 'video';
   icon: string; // Lucide icon name
   color: string; // Tailwind bg color
   features: string[];
@@ -33,6 +33,30 @@ export const TOOLS: Record<string, Tool> = {
     icon: 'Shield',
     color: 'bg-emerald-500',
     features: ['customText', 'opacity', 'tiled'],
+  },
+  'video-to-audio': {
+    id: 'video-to-audio',
+    slug: 'video-to-audio',
+    category: 'video',
+    icon: 'Music',
+    color: 'bg-pink-500',
+    features: ['extractAudio', 'mp3', 'aac'],
+  },
+  'video-mute': {
+    id: 'video-mute',
+    slug: 'video-mute',
+    category: 'video',
+    icon: 'VolumeX',
+    color: 'bg-orange-500',
+    features: ['removeAudio', 'fastCopy', 'preserveQuality'],
+  },
+  'gif-maker': {
+    id: 'gif-maker',
+    slug: 'gif-maker',
+    category: 'video',
+    icon: 'Image',
+    color: 'bg-indigo-500',
+    features: ['videoToGif', 'customFps', 'customSize', 'optimized'],
   },
 };
 

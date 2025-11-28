@@ -11,8 +11,9 @@ import {
   FileText,
   Image as ImageIcon,
 } from 'lucide-react';
+import RecentFiles from './recent-files';
 
-type PageContext = 'data' | 'pdf' | 'image' | 'guide';
+type PageContext = 'data' | 'pdf' | 'image' | 'guide' | 'wiki';
 
 interface SmartSidebarProps {
   lang: string;
@@ -48,12 +49,14 @@ export default function SmartSidebar({ lang, currentContext, currentSlug }: Smar
       pdf: 'More Data Tools',
       image: 'More Data Tools',
       guide: 'Try It Now',
+      wiki: 'Convert This Format',
     },
     fr: {
       data: 'Gagnez du temps',
       pdf: 'Plus d\'outils Data',
       image: 'Plus d\'outils Data',
       guide: 'Essayez maintenant',
+      wiki: 'Convertir ce format',
     },
   };
 
@@ -63,12 +66,14 @@ export default function SmartSidebar({ lang, currentContext, currentSlug }: Smar
       pdf: 'Convert your data formats instantly',
       image: 'Convert your data formats instantly',
       guide: 'Use the tool for free',
+      wiki: 'Use our free converters',
     },
     fr: {
       data: 'Découvrez nos outils de productivité',
       pdf: 'Convertissez vos formats de données',
       image: 'Convertissez vos formats de données',
       guide: 'Utilisez l\'outil gratuitement',
+      wiki: 'Utilisez nos convertisseurs',
     },
   };
 
@@ -124,6 +129,9 @@ export default function SmartSidebar({ lang, currentContext, currentSlug }: Smar
               ))}
             </div>
           </div>
+
+          {/* Recent Files */}
+          <RecentFiles lang={lang} variant="sidebar" />
 
           {/* Trust Badge */}
           <div className="bg-white rounded-xl border border-zinc-200 p-4">
@@ -240,6 +248,34 @@ function getSuggestions(lang: string, context: PageContext, currentSlug?: string
 
   // Tool pages -> suggest data converters
   if (context === 'pdf' || context === 'image') {
+    return dataSuggestions;
+  }
+
+  // Wiki pages -> suggest relevant converters based on format
+  if (context === 'wiki') {
+    if (currentSlug === 'json') {
+      return [
+        { href: `/${lang}/json-to-csv`, icon: iconMap.FileText, title: 'JSON → CSV', description: isFr ? 'Convertir en tableur' : 'Convert to spreadsheet' },
+        { href: `/${lang}/json-to-xml`, icon: iconMap.FileText, title: 'JSON → XML', description: isFr ? 'Export universel' : 'Universal export' },
+        { href: `/${lang}/json-to-yaml`, icon: iconMap.FileText, title: 'JSON → YAML', description: isFr ? 'Format config' : 'Config format' },
+      ];
+    }
+    if (currentSlug === 'csv') {
+      return [
+        { href: `/${lang}/csv-to-json`, icon: iconMap.FileText, title: 'CSV → JSON', description: isFr ? 'Convertir en JSON' : 'Convert to JSON' },
+        { href: `/${lang}/csv-to-xml`, icon: iconMap.FileText, title: 'CSV → XML', description: isFr ? 'Export XML' : 'XML export' },
+        { href: `/${lang}/csv-to-sql`, icon: iconMap.FileText, title: 'CSV → SQL', description: isFr ? 'Requêtes INSERT' : 'INSERT queries' },
+      ];
+    }
+    if (currentSlug === 'pdf') {
+      return toolSuggestions.slice(0, 2);
+    }
+    if (currentSlug === 'mp4' || currentSlug === 'mp3' || currentSlug === 'gif') {
+      return [
+        { href: `/${lang}/tools/video-to-audio`, icon: iconMap.FileText, title: isFr ? 'Vidéo → Audio' : 'Video → Audio', description: isFr ? 'Extraire le MP3' : 'Extract MP3' },
+        { href: `/${lang}/tools/gif-maker`, icon: iconMap.ImageIcon, title: 'GIF Maker', description: isFr ? 'Créer des GIFs' : 'Create GIFs' },
+      ];
+    }
     return dataSuggestions;
   }
 
