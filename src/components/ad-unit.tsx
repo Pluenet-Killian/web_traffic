@@ -1,3 +1,7 @@
+// Contrôle global pour afficher/masquer les pubs
+// Mettre à true une fois l'approbation AdSense obtenue
+export const SHOW_ADS = process.env.NEXT_PUBLIC_SHOW_ADS === 'true';
+
 interface AdUnitProps {
   position: 'header' | 'sidebar' | 'below-result' | 'inline' | 'modal';
   className?: string;
@@ -12,6 +16,9 @@ const AD_SIZES: Record<AdUnitProps['position'], { width: string; height: string;
 };
 
 export default function AdUnit({ position, className = '' }: AdUnitProps) {
+  // Ne rien afficher si les pubs sont désactivées
+  if (!SHOW_ADS) return null;
+
   const size = AD_SIZES[position];
 
   return (
@@ -63,6 +70,9 @@ export default function AdUnit({ position, className = '' }: AdUnitProps) {
 
 // Composant pour la sidebar avec plusieurs emplacements
 export function AdSidebar() {
+  // Ne rien afficher si les pubs sont désactivées
+  if (!SHOW_ADS) return null;
+
   return (
     <aside className="hidden xl:block w-80 flex-shrink-0 space-y-6">
       <AdUnit position="sidebar" />

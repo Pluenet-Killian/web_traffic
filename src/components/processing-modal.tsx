@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Shield, Lock, Zap, CheckCircle } from 'lucide-react';
-import AdUnit from './ad-unit';
+import AdUnit, { SHOW_ADS } from './ad-unit';
 
 interface ProcessingModalProps {
   isOpen: boolean;
@@ -129,24 +129,26 @@ export default function ProcessingModal({
           </div>
 
           {/* Security Tip */}
-          <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl mb-5">
+          <div className={`flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl ${SHOW_ADS ? 'mb-5' : ''}`}>
             <Shield className="w-5 h-5 text-green-600 flex-shrink-0" />
             <p className="text-sm text-green-800 transition-opacity duration-300">
               {currentTips[tipIndex]}
             </p>
           </div>
 
-          {/* Ad Unit - High Intent Placement */}
-          <div className="border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50">
-            <div className="text-center py-1 bg-zinc-100 border-b border-zinc-200">
-              <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium">
-                {lang === 'fr' ? 'Sponsorisé' : 'Sponsored'}
-              </span>
+          {/* Ad Unit - High Intent Placement (affiché uniquement si les pubs sont activées) */}
+          {SHOW_ADS && (
+            <div className="border border-zinc-200 rounded-xl overflow-hidden bg-zinc-50">
+              <div className="text-center py-1 bg-zinc-100 border-b border-zinc-200">
+                <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-medium">
+                  {lang === 'fr' ? 'Sponsorisé' : 'Sponsored'}
+                </span>
+              </div>
+              <div className="flex items-center justify-center p-4 min-h-[250px]">
+                <AdUnit position="modal" className="mx-auto" />
+              </div>
             </div>
-            <div className="flex items-center justify-center p-4 min-h-[250px]">
-              <AdUnit position="modal" className="mx-auto" />
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Footer */}
