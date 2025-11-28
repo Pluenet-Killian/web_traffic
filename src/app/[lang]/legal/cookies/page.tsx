@@ -1,0 +1,137 @@
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { ChevronRight, Cookie } from 'lucide-react';
+import { locales, localeHtmlLang, type Locale } from '@/config/i18n';
+import { getDictionary } from '@/dictionaries';
+import { getLegalContent } from '@/config/legal';
+
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://data-converter.com';
+
+interface PageProps {
+  params: Promise<{ lang: Locale }>;
+}
+
+export async function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const legal = getLegalContent(lang);
+
+  const canonicalUrl = `${BASE_URL}/${lang}/legal/cookies`;
+
+  return {
+    title: legal.cookies.title,
+    description: 'Learn about the cookies used on Data Converter. We use cookies for analytics and advertising. You can manage your preferences at any time.',
+    alternates: {
+      canonical: canonicalUrl,
+      languages: Object.fromEntries(
+        locales.map((l) => [localeHtmlLang[l], `${BASE_URL}/${l}/legal/cookies`])
+      ),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+export default async function CookiesPage({ params }: PageProps) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const legal = getLegalContent(lang);
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Breadcrumb */}
+      <nav className="border-b border-zinc-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <ol className="flex items-center gap-2 text-sm">
+            <li>
+              <Link
+                href={`/${lang}`}
+                className="text-zinc-500 hover:text-zinc-900 transition-colors"
+              >
+                {dict.common.home}
+              </Link>
+            </li>
+            <ChevronRight className="w-4 h-4 text-zinc-300" />
+            <li>
+              <span className="text-zinc-500">Legal</span>
+            </li>
+            <ChevronRight className="w-4 h-4 text-zinc-300" />
+            <li className="text-zinc-900 font-medium">{legal.cookies.title}</li>
+          </ol>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <header className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-14 h-14 rounded-2xl bg-zinc-100 flex items-center justify-center">
+              <Cookie className="w-7 h-7 text-zinc-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-zinc-900">{legal.cookies.title}</h1>
+              <p className="text-zinc-500 mt-1">
+                {lang === 'fr' ? 'Dernière mise à jour' : 'Last updated'}: {legal.cookies.lastUpdated}
+              </p>
+            </div>
+          </div>
+
+          {/* Summary Banner */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <p className="text-amber-800 font-medium">
+              {lang === 'fr'
+                ? '🍪 Nous utilisons des cookies pour les analyses et la publicité. Vous pouvez gérer vos préférences à tout moment.'
+                : '🍪 We use cookies for analytics and advertising. You can manage your preferences at any time.'}
+            </p>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="prose prose-zinc max-w-none">
+          {legal.cookies.sections.map((section, index) => (
+            <section key={index} className="mb-10">
+              <h2 className="text-xl font-semibold text-zinc-900 mb-4">{section.title}</h2>
+              <div className="text-zinc-600 leading-relaxed whitespace-pre-line">
+                {section.content.split('**').map((part, i) =>
+                  i % 2 === 1 ? (
+                    <strong key={i} className="text-zinc-900 font-semibold">
+                      {part}
+                    </strong>
+                  ) : (
+                    part
+                  )
+                )}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {/* Related Links */}
+        <footer className="mt-16 pt-8 border-t border-zinc-200">
+          <h3 className="text-sm font-semibold text-zinc-900 mb-4">
+            {lang === 'fr' ? 'Documents connexes' : 'Related Documents'}
+          </h3>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href={`/${lang}/legal/privacy`}
+              className="text-sm text-zinc-600 hover:text-zinc-900 underline underline-offset-4"
+            >
+              {lang === 'fr' ? 'Politique de Confidentialité' : 'Privacy Policy'}
+            </Link>
+            <Link
+              href={`/${lang}/legal/terms`}
+              className="text-sm text-zinc-600 hover:text-zinc-900 underline underline-offset-4"
+            >
+              {lang === 'fr' ? 'Conditions d\'Utilisation' : 'Terms of Service'}
+            </Link>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}

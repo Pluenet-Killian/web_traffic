@@ -61,6 +61,15 @@ const GUIDES = [
   { label: 'Protect Photos', href: 'guides/how-to-protect-photos-online' },
 ];
 
+// Legal links (translated)
+const LEGAL_LINKS: Record<string, { privacy: string; terms: string; cookies: string }> = {
+  en: { privacy: 'Privacy Policy', terms: 'Terms of Service', cookies: 'Cookie Policy' },
+  fr: { privacy: 'Confidentialité', terms: 'CGU', cookies: 'Cookies' },
+  es: { privacy: 'Privacidad', terms: 'Términos', cookies: 'Cookies' },
+  de: { privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', cookies: 'Cookies' },
+  pt: { privacy: 'Privacidade', terms: 'Termos', cookies: 'Cookies' },
+};
+
 export default function FatFooter({ lang, dict }: FatFooterProps) {
   return (
     <footer className="bg-zinc-950 text-white">
@@ -192,9 +201,26 @@ export default function FatFooter({ lang, dict }: FatFooterProps) {
               </span>
             </div>
 
-            {/* Links */}
+            {/* Legal Links */}
             <div className="flex items-center gap-6">
-              <span className="text-sm text-zinc-500">{dict.footer.securityNote}</span>
+              <Link
+                href={`/${lang}/legal/privacy`}
+                className="text-sm text-zinc-500 hover:text-white transition-colors"
+              >
+                {LEGAL_LINKS[lang]?.privacy || LEGAL_LINKS.en.privacy}
+              </Link>
+              <Link
+                href={`/${lang}/legal/terms`}
+                className="text-sm text-zinc-500 hover:text-white transition-colors"
+              >
+                {LEGAL_LINKS[lang]?.terms || LEGAL_LINKS.en.terms}
+              </Link>
+              <Link
+                href={`/${lang}/legal/cookies`}
+                className="text-sm text-zinc-500 hover:text-white transition-colors"
+              >
+                {LEGAL_LINKS[lang]?.cookies || LEGAL_LINKS.en.cookies}
+              </Link>
             </div>
           </div>
         </div>

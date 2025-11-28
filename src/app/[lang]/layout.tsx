@@ -8,6 +8,7 @@ import MegaMenu from '@/components/mega-menu';
 import MobileMenu from '@/components/mobile-menu';
 import FatFooter from '@/components/fat-footer';
 import AdBillboard from '@/components/ad-billboard';
+import ClientProviders from '@/components/client-providers';
 import '../globals.css';
 
 const inter = Inter({
@@ -119,81 +120,83 @@ export default async function LangLayout({ children, params }: LayoutProps) {
         />
       </head>
       <body className="font-sans bg-white text-zinc-900 min-h-screen flex flex-col antialiased">
-        {/* Premium Navbar */}
-        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-200/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              {/* Logo */}
-              <Link href={`/${lang}`} className="flex items-center gap-3 group">
-                <div className="w-9 h-9 bg-zinc-900 rounded-xl flex items-center justify-center group-hover:bg-zinc-800 transition-colors">
-                  <span className="text-white font-bold text-sm">DC</span>
-                </div>
-                <div className="hidden sm:block">
-                  <span className="font-semibold text-zinc-900 tracking-tight">
-                    {dict.meta.siteName}
-                  </span>
-                  <span className="hidden md:inline text-zinc-400 text-sm ml-2">
-                    Data Tools
-                  </span>
-                </div>
-              </Link>
+        <ClientProviders lang={lang}>
+          {/* Premium Navbar */}
+          <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-zinc-200/80">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                {/* Logo */}
+                <Link href={`/${lang}`} className="flex items-center gap-3 group">
+                  <div className="w-9 h-9 bg-zinc-900 rounded-xl flex items-center justify-center group-hover:bg-zinc-800 transition-colors">
+                    <span className="text-white font-bold text-sm">DC</span>
+                  </div>
+                  <div className="hidden sm:block">
+                    <span className="font-semibold text-zinc-900 tracking-tight">
+                      {dict.meta.siteName}
+                    </span>
+                    <span className="hidden md:inline text-zinc-400 text-sm ml-2">
+                      Data Tools
+                    </span>
+                  </div>
+                </Link>
 
-              {/* Mega Menu (Desktop) */}
-              <MegaMenu lang={lang} dict={dict} />
+                {/* Mega Menu (Desktop) */}
+                <MegaMenu lang={lang} dict={dict} />
 
-              {/* Right Side */}
-              <div className="flex items-center gap-2">
-                {/* Language Switcher */}
-                <div className="relative group">
-                  <button
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all duration-200"
-                    aria-label="Change language"
-                  >
-                    <Globe className="w-4 h-4" />
-                    <span className="hidden sm:inline font-medium">{localeNames[lang]}</span>
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
+                {/* Right Side */}
+                <div className="flex items-center gap-2">
+                  {/* Language Switcher */}
+                  <div className="relative group">
+                    <button
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-all duration-200"
+                      aria-label="Change language"
+                    >
+                      <Globe className="w-4 h-4" />
+                      <span className="hidden sm:inline font-medium">{localeNames[lang]}</span>
+                      <ChevronDown className="w-3 h-3" />
+                    </button>
 
-                  {/* Dropdown */}
-                  <div className="absolute right-0 mt-1 w-44 bg-white rounded-xl border border-zinc-200 shadow-xl shadow-zinc-200/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-50">
-                    <div className="py-2">
-                      {locales.map((locale) => (
-                        <Link
-                          key={locale}
-                          href={`/${locale}`}
-                          className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors duration-150 ${
-                            locale === lang
-                              ? 'bg-zinc-100 text-zinc-900 font-medium'
-                              : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
-                          }`}
-                        >
-                          <span>{localeNames[locale]}</span>
-                          {locale === lang && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
-                          )}
-                        </Link>
-                      ))}
+                    {/* Dropdown */}
+                    <div className="absolute right-0 mt-1 w-44 bg-white rounded-xl border border-zinc-200 shadow-xl shadow-zinc-200/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-50">
+                      <div className="py-2">
+                        {locales.map((locale) => (
+                          <Link
+                            key={locale}
+                            href={`/${locale}`}
+                            className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors duration-150 ${
+                              locale === lang
+                                ? 'bg-zinc-100 text-zinc-900 font-medium'
+                                : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                            }`}
+                          >
+                            <span>{localeNames[locale]}</span>
+                            {locale === lang && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                            )}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Mobile Menu */}
-                <MobileMenu lang={lang} dict={dict} />
+                  {/* Mobile Menu */}
+                  <MobileMenu lang={lang} dict={dict} />
+                </div>
               </div>
             </div>
+          </header>
+
+          {/* Billboard Ad (Top of Page) */}
+          <div className="bg-zinc-50 border-b border-zinc-200 py-4 hidden lg:block">
+            <AdBillboard />
           </div>
-        </header>
 
-        {/* Billboard Ad (Top of Page) */}
-        <div className="bg-zinc-50 border-b border-zinc-200 py-4 hidden lg:block">
-          <AdBillboard />
-        </div>
+          {/* Main Content */}
+          <main className="flex-1">{children}</main>
 
-        {/* Main Content */}
-        <main className="flex-1">{children}</main>
-
-        {/* Fat Footer */}
-        <FatFooter lang={lang} dict={dict} />
+          {/* Fat Footer */}
+          <FatFooter lang={lang} dict={dict} />
+        </ClientProviders>
       </body>
     </html>
   );
