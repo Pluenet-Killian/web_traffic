@@ -1,0 +1,612 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   PREMIUM SAAS DESIGN SYSTEM
+   Inspired by Vercel, Linear, Raycast
+   ============================================ */
+
+@layer base {
+  :root {
+    /* Background Colors */
+    --bg-primary: 250 250 250;      /* zinc-50 */
+    --bg-secondary: 255 255 255;    /* white */
+    --bg-tertiary: 244 244 245;     /* zinc-100 */
+    --bg-elevated: 255 255 255;     /* white */
+    --bg-code: 24 24 27;            /* zinc-900 */
+
+    /* Text Colors */
+    --text-primary: 24 24 27;       /* zinc-900 */
+    --text-secondary: 82 82 91;     /* zinc-600 */
+    --text-tertiary: 113 113 122;   /* zinc-500 */
+    --text-muted: 161 161 170;      /* zinc-400 */
+    --text-inverted: 250 250 250;   /* zinc-50 */
+
+    /* Border Colors */
+    --border-primary: 228 228 231;  /* zinc-200 */
+    --border-secondary: 212 212 216; /* zinc-300 */
+    --border-focus: 99 102 241;     /* indigo-500 */
+
+    /* Accent Colors - Indigo */
+    --accent-primary: 79 70 229;    /* indigo-600 */
+    --accent-hover: 67 56 202;      /* indigo-700 */
+    --accent-light: 238 242 255;    /* indigo-50 */
+    --accent-muted: 199 210 254;    /* indigo-200 */
+
+    /* Semantic Colors */
+    --success: 34 197 94;           /* green-500 */
+    --success-light: 240 253 244;   /* green-50 */
+    --success-border: 187 247 208;  /* green-200 */
+
+    --error: 239 68 68;             /* red-500 */
+    --error-light: 254 242 242;     /* red-50 */
+    --error-border: 254 202 202;    /* red-200 */
+
+    --warning: 245 158 11;          /* amber-500 */
+    --warning-light: 255 251 235;   /* amber-50 */
+
+    --info: 59 130 246;             /* blue-500 */
+    --info-light: 239 246 255;      /* blue-50 */
+    --info-border: 191 219 254;     /* blue-200 */
+
+    /* Shadow Opacity */
+    --shadow-opacity: 0.08;
+
+    /* Animation */
+    --transition-fast: 150ms;
+    --transition-base: 200ms;
+    --transition-slow: 300ms;
+  }
+
+  /* Dark mode - préparé pour le futur */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: 9 9 11;         /* zinc-950 */
+      --bg-secondary: 24 24 27;     /* zinc-900 */
+      --bg-tertiary: 39 39 42;      /* zinc-800 */
+      --bg-elevated: 39 39 42;      /* zinc-800 */
+      --bg-code: 9 9 11;            /* zinc-950 */
+
+      --text-primary: 250 250 250;  /* zinc-50 */
+      --text-secondary: 161 161 170; /* zinc-400 */
+      --text-tertiary: 113 113 122; /* zinc-500 */
+      --text-muted: 82 82 91;       /* zinc-600 */
+      --text-inverted: 24 24 27;    /* zinc-900 */
+
+      --border-primary: 39 39 42;   /* zinc-800 */
+      --border-secondary: 63 63 70; /* zinc-700 */
+
+      --shadow-opacity: 0.3;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-zinc-200;
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-zinc-50 text-zinc-900 min-h-screen;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Typography Scale - Optimized for readability */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-zinc-900;
+  }
+
+  h1 {
+    @apply text-4xl lg:text-5xl leading-[1.1];
+  }
+
+  h2 {
+    @apply text-2xl lg:text-3xl leading-tight;
+  }
+
+  h3 {
+    @apply text-xl lg:text-2xl leading-snug;
+  }
+
+  p {
+    @apply leading-relaxed text-zinc-600;
+  }
+
+  /* Focus Styles - Accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-indigo-500 ring-offset-2 ring-offset-white;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-indigo-100 text-indigo-900;
+  }
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+@layer components {
+  /* Glass Morphism Navbar */
+  .glass-navbar {
+    @apply bg-white/80 backdrop-blur-xl border-b border-zinc-200/80;
+    backdrop-saturate: 180%;
+  }
+
+  /* Premium Card */
+  .card {
+    @apply bg-white rounded-2xl border border-zinc-200 shadow-sm;
+    @apply hover:shadow-md hover:border-zinc-300 transition-all duration-200;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-2xl border border-zinc-100;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.03),
+      0 2px 4px rgb(0 0 0 / 0.05),
+      0 12px 24px rgb(0 0 0 / 0.05);
+  }
+
+  /* Code Editor Style */
+  .editor-container {
+    @apply relative rounded-xl overflow-hidden;
+    @apply border border-zinc-200 bg-zinc-900;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.05),
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .editor-header {
+    @apply flex items-center justify-between px-4 py-2.5;
+    @apply bg-zinc-800 border-b border-zinc-700;
+  }
+
+  .editor-dots {
+    @apply flex items-center gap-2;
+  }
+
+  .editor-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .editor-textarea {
+    @apply w-full min-h-[320px] p-4 font-mono text-sm leading-relaxed;
+    @apply bg-zinc-900 text-zinc-100 placeholder-zinc-500;
+    @apply resize-none border-0 focus:ring-0 focus:outline-none;
+  }
+
+  .editor-textarea-light {
+    @apply w-full min-h-[320px] p-4 font-mono text-sm leading-relaxed;
+    @apply bg-zinc-50 text-zinc-900 placeholder-zinc-400;
+    @apply border border-zinc-200 rounded-xl;
+    @apply resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent;
+    @apply transition-all duration-200;
+  }
+
+  /* Line Numbers (CSS pseudo-element approach) */
+  .with-line-numbers {
+    background-image: linear-gradient(
+      to right,
+      rgb(39 39 42) 40px,
+      transparent 40px
+    );
+    padding-left: 52px !important;
+    background-attachment: local;
+  }
+
+  /* Primary Button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 text-base font-semibold text-white;
+    @apply bg-indigo-600 hover:bg-indigo-700;
+    @apply rounded-xl shadow-sm;
+    @apply transition-all duration-200;
+    @apply active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-primary-lg {
+    @apply btn-primary px-8 py-4 text-lg rounded-2xl;
+    @apply shadow-lg shadow-indigo-500/25;
+    @apply hover:shadow-xl hover:shadow-indigo-500/30;
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-4 py-2 text-sm font-medium text-zinc-700;
+    @apply bg-zinc-100 hover:bg-zinc-200;
+    @apply rounded-lg border border-zinc-200;
+    @apply transition-all duration-200;
+    @apply active:scale-[0.98];
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-3 py-1.5 text-sm font-medium text-zinc-600;
+    @apply hover:text-zinc-900 hover:bg-zinc-100;
+    @apply rounded-lg transition-all duration-200;
+  }
+
+  /* Icon Button */
+  .btn-icon {
+    @apply inline-flex items-center justify-center;
+    @apply w-9 h-9 text-zinc-500;
+    @apply hover:text-zinc-900 hover:bg-zinc-100;
+    @apply rounded-lg transition-all duration-200;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5;
+    @apply text-xs font-medium rounded-full;
+  }
+
+  .badge-primary {
+    @apply badge bg-indigo-100 text-indigo-700;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-700;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-700;
+  }
+
+  /* Format Badge - for JSON, CSV, etc. */
+  .format-badge {
+    @apply inline-flex items-center px-3 py-1.5;
+    @apply text-sm font-bold rounded-lg;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    @apply relative inline-flex;
+  }
+
+  .tooltip::after {
+    content: attr(data-tooltip);
+    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2;
+    @apply px-2.5 py-1 text-xs font-medium text-white;
+    @apply bg-zinc-900 rounded-lg whitespace-nowrap;
+    @apply opacity-0 invisible transition-all duration-200;
+    @apply pointer-events-none;
+  }
+
+  .tooltip:hover::after {
+    @apply opacity-100 visible;
+  }
+
+  /* Dropdown Menu */
+  .dropdown-menu {
+    @apply absolute top-full right-0 mt-2 min-w-[160px];
+    @apply bg-white rounded-xl border border-zinc-200;
+    @apply shadow-lg shadow-zinc-900/10;
+    @apply opacity-0 invisible translate-y-1;
+    @apply transition-all duration-200;
+    @apply z-50;
+  }
+
+  .dropdown-trigger:hover + .dropdown-menu,
+  .dropdown-menu:hover {
+    @apply opacity-100 visible translate-y-0;
+  }
+
+  .dropdown-item {
+    @apply block px-4 py-2.5 text-sm text-zinc-700;
+    @apply hover:bg-zinc-50 hover:text-zinc-900;
+    @apply first:rounded-t-xl last:rounded-b-xl;
+    @apply transition-colors duration-150;
+  }
+
+  /* Accordion */
+  .accordion-item {
+    @apply border border-zinc-200 rounded-xl overflow-hidden;
+    @apply bg-white transition-all duration-200;
+  }
+
+  .accordion-item:hover {
+    @apply border-zinc-300;
+  }
+
+  .accordion-trigger {
+    @apply flex items-center justify-between w-full;
+    @apply px-5 py-4 text-left font-medium text-zinc-900;
+    @apply hover:bg-zinc-50 transition-colors duration-200;
+    @apply cursor-pointer;
+  }
+
+  .accordion-content {
+    @apply px-5 pb-4 text-zinc-600;
+  }
+
+  /* Feature Card */
+  .feature-card {
+    @apply p-6 rounded-2xl bg-white border border-zinc-200;
+    @apply hover:border-zinc-300 hover:shadow-md;
+    @apply transition-all duration-200;
+  }
+
+  .feature-card-icon {
+    @apply w-12 h-12 rounded-xl flex items-center justify-center;
+    @apply bg-indigo-100 text-indigo-600;
+    @apply mb-4;
+  }
+
+  /* Toast Notifications */
+  .toast {
+    @apply flex items-center gap-3 px-4 py-3;
+    @apply bg-white rounded-xl border shadow-lg;
+    @apply animate-toast-in;
+  }
+
+  .toast-success {
+    @apply toast border-green-200 bg-green-50;
+  }
+
+  .toast-error {
+    @apply toast border-red-200 bg-red-50;
+  }
+
+  .toast-info {
+    @apply toast border-blue-200 bg-blue-50;
+  }
+
+  /* Drag & Drop Zone */
+  .drop-zone {
+    @apply relative rounded-xl border-2 border-dashed border-zinc-300;
+    @apply transition-all duration-200;
+  }
+
+  .drop-zone-active {
+    @apply border-indigo-500 bg-indigo-50;
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply animate-pulse bg-zinc-200 rounded;
+  }
+
+  /* Link styles */
+  .link {
+    @apply text-indigo-600 hover:text-indigo-700;
+    @apply underline-offset-4 hover:underline;
+    @apply transition-colors duration-200;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    @apply flex items-center gap-2 text-sm;
+  }
+
+  .breadcrumb-item {
+    @apply text-zinc-500 hover:text-zinc-900 transition-colors duration-200;
+  }
+
+  .breadcrumb-separator {
+    @apply text-zinc-300;
+  }
+
+  .breadcrumb-current {
+    @apply text-zinc-900 font-medium;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+@layer utilities {
+  /* Text Balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Container with max-width */
+  .container-tight {
+    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600;
+  }
+
+  /* Subtle shadow for cards */
+  .shadow-subtle {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.05),
+      0 4px 12px rgb(0 0 0 / 0.05);
+  }
+
+  /* Glow effect for primary buttons */
+  .glow-indigo {
+    box-shadow: 0 0 20px rgb(99 102 241 / 0.3);
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scrolling container */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus ring for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+  }
+
+  /* Truncate with ellipsis */
+  .truncate-lines-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .truncate-lines-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+/* Hide on mobile, show on desktop */
+@media (max-width: 767px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* Hide on desktop, show on mobile */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+
+  .card, .card-elevated {
+    @apply shadow-none border border-zinc-300;
+  }
+}

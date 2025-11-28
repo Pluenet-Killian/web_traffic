@@ -33,7 +33,6 @@ A high-performance, SEO-optimized data format converter built with Next.js 14. C
 ```bash
 # Clone the repository
 git clone <your-repo-url>
-cd data-converter
 
 # Install dependencies
 npm install
